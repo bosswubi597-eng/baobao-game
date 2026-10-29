@@ -1248,6 +1248,7 @@ $('btnAgain').onclick=()=>{sfx.tap();startGame()};
 $('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
 
 setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.35)toast(Math.random()<.5?'哇災！':'嘿！雅馬哈！',1300)},6000);
+setInterval(()=>{if(!G||!G.run)return;const e=$('prepSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.3)toast('🎵 夢的翅膀已經受了傷～',2200)},8000);
 window.__BBB={
   start:startGame, end:(w)=>endGame(!!w), get:()=>G,
   startCook, finishCook, deliverPlate, spawnGuest, canSpawn, syncTray,
