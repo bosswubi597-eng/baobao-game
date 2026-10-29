@@ -1211,7 +1211,7 @@ function handleTapSelect(info){
       const c=chefById(w.getAttribute('data-wok'));
       if(c&&!c.cooking) w.classList.add('tap-hi');
     });
-    toast('再點空閒鍋',800);
+    
   }else{
     const slot=document.querySelector(`[data-plate="${info.id}"]`);
     if(slot) slot.classList.add('sel');
