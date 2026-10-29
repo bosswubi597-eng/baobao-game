@@ -537,7 +537,7 @@ const music={on:(()=>{try{return localStorage.getItem('bbb_music')!=='0'}catch(e
 };
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on')}
-function toast(t,ms){const e=$(/端|送|盤|惠顧|哇災|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
+function toast(t,ms){const e=$(/端|送|盤|惠顧|哇災|雅馬哈|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
 function hiGet(){try{return +(localStorage.getItem(LS)||0)}catch(e){return window.__hi||0}}
 function hiSet(n){if(n>hiGet()){window.__hi=n;try{localStorage.setItem(LS,String(n))}catch(e){}}}
 function refreshHi(){$('hiScore').textContent='最高分：'+hiGet()}
@@ -1247,7 +1247,7 @@ $('btnStart').onclick=()=>{sfx.tap();startGame()};
 $('btnAgain').onclick=()=>{sfx.tap();startGame()};
 $('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
 
-setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.3)toast('哇災！',1100)},6000);
+setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.35)toast(Math.random()<.5?'哇災！':'嘿！雅馬哈！',1300)},6000);
 window.__BBB={
   start:startGame, end:(w)=>endGame(!!w), get:()=>G,
   startCook, finishCook, deliverPlate, spawnGuest, canSpawn, syncTray,
