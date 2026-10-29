@@ -1211,7 +1211,7 @@ function handleTapSelect(info){
       const c=chefById(w.getAttribute('data-wok'));
       if(c&&!c.cooking) w.classList.add('tap-hi');
     });
-    toast(Math.random()<.5?'炒快一點！':'🎵 夢的翅膀已經受了傷～',1400);
+    toast(['炒快一點！','🎵 夢的翅膀已經受了傷～','🎵 嘟嘟嘟他好壞～'][Math.floor(Math.random()*3)],1400);
   }else{
     const slot=document.querySelector(`[data-plate="${info.id}"]`);
     if(slot) slot.classList.add('sel');
@@ -1248,7 +1248,7 @@ $('btnAgain').onclick=()=>{sfx.tap();startGame()};
 $('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
 
 setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.35)toast(Math.random()<.5?'哇災！':'嘿！雅馬哈！',1300)},6000);
-setInterval(()=>{if(!G||!G.run)return;const e=$('prepSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.3)toast('🎵 夢的翅膀已經受了傷～',2200)},8000);
+setInterval(()=>{if(!G||!G.run)return;const e=$('prepSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.3)toast(Math.random()<.5?'🎵 夢的翅膀已經受了傷～':'🎵 嘟嘟嘟他好壞～',2200)},8000);
 window.__BBB={
   start:startGame, end:(w)=>endGame(!!w), get:()=>G,
   startCook, finishCook, deliverPlate, spawnGuest, canSpawn, syncTray,
