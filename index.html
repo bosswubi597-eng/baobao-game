@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>寶飽煲小館</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;image-rendering:pixelated;image-rendering:crisp-edges}
+html,body{height:100%;height:100dvh;overflow:hidden;font-family:"Courier New",Courier,monospace;background:#0d0d0d;color:#2b1a0e;touch-action:none}
+#app{max-width:480px;margin:0 auto;height:100%;height:100dvh;display:flex;flex-direction:column;background:#1a1a1a;position:relative;overflow:hidden;border:4px solid #111}
+.screen{display:none;flex-direction:column;height:100%;padding:8px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.screen.on{display:flex}
+h1{font-size:clamp(16px,4.5vw,22px);color:#fff;text-align:center;line-height:1.35;margin:6px 0;text-shadow:3px 3px 0 #8b0000,-1px 0 #000,1px 0 #000,0 1px #000;letter-spacing:1px}
+.sub{text-align:center;font-size:14px;color:#1a1a1a;margin-bottom:6px;line-height:1.45;font-weight:700}
+.btn{border:4px solid #1a1a1a;border-radius:0;padding:12px 16px;font-size:18px;font-weight:900;font-family:inherit;cursor:pointer;background:#e74c3c;color:#fff;box-shadow:4px 4px 0 #1a1a1a}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #1a1a1a}
+.btn.sec{background:#f1c40f;color:#1a1a1a}
+.btn.big{font-size:21px;padding:16px 20px;width:100%;max-width:300px}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;flex:1;background:linear-gradient(#87ceeb 0%,#87ceeb 38%,#7ec850 38%,#7ec850 42%,#c4a574 42%,#c4a574 100%);position:relative;overflow:hidden}
+.center::before{content:"";position:absolute;inset:0;background:
+  repeating-linear-gradient(0deg,transparent,transparent 11px,rgba(139,90,43,.18) 11px,rgba(139,90,43,.18) 14px),
+  repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(0,0,0,.06) 18px,rgba(0,0,0,.06) 20px);
+  pointer-events:none;opacity:.55;top:42%}
+.center::after{display:none}
+.center>*{position:relative;z-index:1}
+.logo{font-size:40px;line-height:1;filter:drop-shadow(2px 2px 0 #1a1a1a)}
+.hi{font-size:16px;font-weight:800;background:#fff;border:3px solid #1a1a1a;padding:4px 8px;box-shadow:3px 3px 0 #1a1a1a}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:4px;background:linear-gradient(#34495e,#2c3e50);color:#fff;border:4px solid #1a1a1a;padding:6px 8px;font-weight:900;font-size:14px;flex-shrink:0;box-shadow:4px 4px 0 #111;z-index:5}
+.hud .pill{background:#1a1a1a;padding:3px 8px;border:2px solid #7f8c8d;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+#s-start .center{border:14px solid #b71c1c;border-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22%23b71c1c%22/%3E%3Cpath%20d%3D%22M2%202h20v20H2zM6%206h12v12H6zM10%2010h4v4h-4z%22%20fill%3D%22none%22%20stroke%3D%22%23f4c542%22%20stroke-width%3D%222%22/%3E%3Cpath%20d%3D%22M12%202v4M12%2018v4M2%2012h4M18%2012h4%22%20stroke%3D%22%23b71c1c%22%20stroke-width%3D%222%22/%3E%3C/svg%3E") 8 round;box-shadow:inset 0 0 0 3px #f4c542,inset 0 0 0 6px #1a1a1a}
+#s-start .center .corner{position:absolute;width:26px;height:26px;z-index:3;pointer-events:none;border:4px solid #f4c542;background:#b71c1c;box-shadow:0 0 0 2px #1a1a1a}
+#s-start .center .corner::after{content:"";position:absolute;inset:4px;border:3px solid #f4c542}
+#s-start .center .c1{left:4px;top:4px}#s-start .center .c2{right:4px;top:4px}#s-start .center .c3{left:4px;bottom:4px}#s-start .center .c4{right:4px;bottom:4px}
+.px-banner{background:linear-gradient(#e74c3c,#c0392b);border:4px solid #1a1a1a;color:#fff;padding:8px;text-align:center;box-shadow:4px 4px 0 #1a1a1a}
+.steps{font-size:14px;line-height:1.55;background:#fffef5;border:4px solid #1a1a1a;padding:8px 10px;max-width:320px;text-align:left;box-shadow:3px 3px 0 #1a1a1a;font-weight:700}
+.stars{font-size:28px;letter-spacing:2px;color:#f1c40f;text-shadow:2px 2px 0 #1a1a1a}
+.cta-top{margin:0 0 10px!important;font-size:16px!important;max-width:340px!important;width:100%;padding:10px 12px!important;border-color:#b71c1c!important;box-shadow:4px 4px 0 #f4c542!important}
+.cta{margin-top:8px;font-size:14px;text-align:center;line-height:1.5;background:#fffef5;border:4px solid #1a1a1a;padding:8px 10px;max-width:320px;box-shadow:3px 3px 0 #1a1a1a;font-weight:700}
+
+/* ===== storefront ===== */
+.shop{flex:0 0 auto;position:relative;margin-top:6px;border:4px solid #1a1a1a;background:#87ceeb;overflow:hidden;min-height:196px;box-shadow:4px 4px 0 #111}
+.shop-sky{position:absolute;inset:0 0 40% 0;background:linear-gradient(#6ec6ff,#87ceeb 55%,#a8d8ff);overflow:hidden}
+.sun{position:absolute;right:14px;top:6px;width:22px;height:22px;background:#ffe566;border:3px solid #1a1a1a;border-radius:50%;box-shadow:0 0 0 3px rgba(255,229,102,.35);z-index:1}
+.crow{position:absolute;top:6px;left:-40px;font-size:22px;z-index:5;pointer-events:none;animation:crowfly 3.2s linear forwards}.crow span{display:inline-block;transform:scaleX(-1)}.crow .wd{animation:flapd .3s steps(1) infinite}.crow .wu{animation:flapu .3s steps(1) infinite}@keyframes flapu{0%{opacity:1}50%{opacity:0}}@keyframes flapd{0%{opacity:0}50%{opacity:1}}@keyframes crowfly{0%{left:-40px;top:14px}25%{top:4px}50%{top:16px}75%{top:6px}100%{left:110%;top:12px}}
+.cloud{position:absolute;background:#fff;border:2px solid #1a1a1a;height:10px;border-radius:0;z-index:1;box-shadow:2px 2px 0 rgba(0,0,0,.15)}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border:2px solid #1a1a1a;border-radius:0}
+.cloud.c1{left:10px;top:10px;width:28px}
+.cloud.c1::before{width:14px;height:10px;left:4px;top:-8px}
+.cloud.c1::after{width:12px;height:8px;right:2px;top:-6px}
+.cloud.c2{left:42%;top:4px;width:22px;opacity:.9}
+.cloud.c2::before{width:10px;height:8px;left:3px;top:-6px}
+.shop-facade{position:absolute;left:0;right:0;bottom:0;height:80%;background:
+  repeating-linear-gradient(0deg,#c4a574 0 10px,#b8956a 10px 11px),
+  repeating-linear-gradient(90deg,#c4a574 0 16px,#a67c52 16px 17px);
+  background-blend-mode:multiply;border-top:4px solid #1a1a1a}
+.shop-vsign{position:absolute;right:5px;bottom:58px;width:40px;text-align:center;z-index:5;writing-mode:vertical-rl;text-orientation:upright;background:linear-gradient(90deg,#c0392b,#e74c3c,#c0392b);color:#fff;border:3px solid #1a1a1a;padding:6px 0;font-size:24px;font-weight:900;letter-spacing:3px;line-height:1;box-shadow:3px 3px 0 #1a1a1a;text-shadow:1px 1px 0 #7b241c}
+.top-sign{flex-shrink:0;align-self:center;margin:2px auto 4px;background:linear-gradient(#e74c3c,#c0392b);color:#fff;border:4px solid #1a1a1a;padding:3px 22px;font-size:24px;font-weight:900;letter-spacing:4px;box-shadow:4px 4px 0 #1a1a1a;text-shadow:2px 2px 0 #7b241c;white-space:nowrap}
+.shop-sign{position:absolute;left:50%;top:3px;transform:translateX(-50%);background:linear-gradient(#e74c3c,#c0392b);color:#fff;border:3px solid #1a1a1a;padding:2px 12px;font-size:16px;font-weight:900;box-shadow:3px 3px 0 #1a1a1a;z-index:4;white-space:nowrap}
+.shop-lantern{position:absolute;left:6px;top:28%;font-size:18px;z-index:4;line-height:1;filter:drop-shadow(1px 1px 0 #1a1a1a)}
+.shop-plant{position:absolute;right:46px;bottom:2px;font-size:18px;z-index:5;line-height:1;filter:drop-shadow(1px 1px 0 #1a1a1a)}
+.shop-window{position:absolute;left:10px;bottom:12px;width:52px;height:38px;background:linear-gradient(160deg,#c8e8ff,#7ec8e8);border:3px solid #1a1a1a;box-shadow:inset 4px 4px 0 rgba(255,255,255,.4),2px 2px 0 #5d4037;z-index:2}
+.shop-window::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;background:#1a1a1a;transform:translateX(-50%)}
+.shop-window::before{content:"";position:absolute;top:50%;left:0;right:0;height:3px;background:#1a1a1a;transform:translateY(-50%)}
+.shop-door{position:absolute;right:6px;bottom:0;width:38px;height:54px;background:#6d4c41;border:3px solid #1a1a1a;border-bottom:none;z-index:4;box-shadow:inset -6px 0 0 #5d4037;transition:background .15s}
+.shop-door .door-panel{position:absolute;left:5px;right:5px;top:6px;bottom:18px;border:2px solid #4e342e;background:linear-gradient(90deg,#795548 0 50%,#6d4c41 50%)}
+.shop-door .knob{position:absolute;left:5px;top:50%;width:7px;height:7px;background:#f1c40f;border:2px solid #1a1a1a;z-index:1}
+.shop-door.open{background:#2c1810;box-shadow:inset 10px 0 0 #1a0f0a}
+.shop-door.open .door-panel{opacity:.15}
+.shop-door.open .knob{opacity:.3}
+#walkLayer{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden}
+.shop-floor{position:absolute;left:0;right:72px;bottom:0;top:20%;display:flex;align-items:flex-end;justify-content:space-between;padding:4px 2px 2px 4px;gap:2px;z-index:2;background:
+  linear-gradient(180deg,rgba(0,0,0,.12),transparent 28%),
+  repeating-linear-gradient(90deg,#d7ccc8 0 10px,#bcaaa4 10px 20px),
+  repeating-linear-gradient(0deg,transparent 0 8px,rgba(0,0,0,.08) 8px 9px);
+  border-top:2px solid #8d6e63}
+/* fixed table seats — no card panels */
+.seat-slot{flex:1;min-width:0;max-width:72px;height:124px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 1px 32px;z-index:2}
+.seat-slot.drop-hi,.seat-slot.tap-hi{filter:brightness(1.12)}
+.seat-slot.drop-hi .table::before,.seat-slot.tap-hi .table::before{background:#7dcea0;box-shadow:inset 0 2px 0 #a9dfbf,inset 0 -2px 0 #1e8449,0 0 0 2px #2ecc71}
+.seat-slot .puppet-zone{position:absolute;left:50%;bottom:48px;width:26px;height:34px;margin-left:-13px;z-index:1;pointer-events:none}
+.seat-slot .puppet-zone .px-guest{margin:0;position:absolute;left:0;bottom:0}
+.seat-slot .table{position:relative;width:100%;max-width:58px;height:22px;z-index:3;flex-shrink:0;pointer-events:none}
+.seat-slot .table::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:#a1662f;border:2px solid #1a1a1a;box-shadow:inset 0 2px 0 #c98a4b,inset 0 -2px 0 #7a4a1f}
+.seat-slot .table .tl{position:absolute;top:10px;width:4px;height:10px;background:#6d4321;border:1px solid #1a1a1a}
+.seat-slot .table .l1{left:5px}.seat-slot .table .l2{right:5px}
+.seat-slot .tb-plate{position:absolute;left:50%;top:2px;width:14px;height:4px;margin-left:-7px;background:#fff;border:1px solid #1a1a1a;border-radius:50%;z-index:1}
+.seat-slot.empty .table{opacity:.85}
+.seat-slot .bubble{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:#fff;border:2px solid #1a1a1a;padding:1px 2px 2px;z-index:5;box-shadow:2px 2px 0 #c0392b;min-width:0;max-width:none;width:max-content;text-align:center;pointer-events:none}
+.seat-slot .bubble::after{content:"";position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #1a1a1a}
+.seat-slot .bubble::before{content:"";position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid #fff;z-index:1}
+.seat-slot .want{font-size:14px;line-height:1}
+.seat-slot .want-n{font-size:13px;white-space:nowrap;word-break:keep-all;font-weight:900;color:#c0392b;line-height:1.1;word-break:break-all}
+
+.seat-slot.eating .bubble{display:none}
+.seat-slot.eating .food-on{position:absolute;left:50%;top:-2px;transform:translateX(-50%);font-size:18px;z-index:4;line-height:1;animation:eatBob .35s steps(2) infinite;pointer-events:none}
+.seat-slot .eat-bar{position:absolute;left:8%;right:8%;bottom:54px;height:5px;background:#1a1a1a;border:2px solid #1a1a1a;z-index:6;overflow:hidden;pointer-events:none}
+.seat-slot .eat-bar .eat-fill{height:100%;background:#2ecc71;width:0;animation:cookFill linear forwards}
+.seat-slot.eating .px-guest.sit{animation:guestIdle .28s steps(2) infinite}
+
+.seat-slot.mad .bubble{background:#ffe0e0;box-shadow:2px 2px 0 #c0392b}
+.seat-slot .bubble::after,.seat-slot .bubble::before{display:none}
+.seat-slot .bubble .want{display:none}
+.seat-slot.mad .want-n{color:#922b21}
+.seat-slot .g-say{position:absolute;left:50%;bottom:0;transform:translateX(-50%);z-index:7;background:#fff3b0;color:#922b21;border:2px solid #1a1a1a;border-radius:8px;bottom:84px;padding:0 3px;font-size:12px;font-weight:900;white-space:nowrap;box-shadow:2px 2px 0 #1a1a1a;pointer-events:none;animation:madShake .3s steps(2) infinite}
+.seat-slot .g-say.mine-say{background:#d5f5e3;color:#1e8449;animation:none;z-index:8}
+.seat-slot .g-say.chat-say{background:#fff;color:#1a1a1a;animation:none}
+.seat-slot[data-si="0"] .g-say{left:0;transform:none}
+.seat-slot .g-say:has(.gf){white-space:normal;width:max-content;max-width:56px;font-size:11px;line-height:1.15;text-align:center;padding:1px 3px;bottom:80px}
+.seat-slot .g-say .gf{display:block;font-size:22px;line-height:1;margin:-16px auto 1px;filter:drop-shadow(1px 1px 0 #1a1a1a)}
+.seat-slot .complain{display:block;font-size:13px;font-weight:900;color:#c0392b;margin-top:1px;line-height:1.1}
+.seat-slot.mad .puppet-zone{animation:madShake .35s steps(2) infinite}
+@keyframes madShake{50%{transform:translateX(1px)}}
+
+@keyframes eatBob{50%{transform:translateX(-50%) translateY(-2px) scale(1.05)}}
+
+@keyframes speakIn{from{opacity:0;transform:translateX(-50%) translateY(4px) scale(.85)}to{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}
+/* compat aliases for old .cust selectors used in JS */
+.cust{/* seat hit target */}
+.cust.drop-hi,.cust.tap-hi{filter:brightness(1.12)}
+/* SNES / HD-2D style pixel guest sprite */
+.px-guest{position:relative;width:26px;height:38px;margin:0 auto 2px;image-rendering:pixelated;filter:drop-shadow(1px 0 0 #1a1a1a) drop-shadow(-1px 0 0 #1a1a1a) drop-shadow(0 1px 0 #1a1a1a)}
+.px-guest .g-shadow{position:absolute;left:3px;right:3px;bottom:-1px;height:5px;background:rgba(0,0,0,.28);border-radius:50%;z-index:0;pointer-events:none}
+.px-guest .g-hair{position:absolute;left:4px;top:0;width:18px;height:6px;z-index:3;box-shadow:inset -2px 0 0 rgba(0,0,0,.2),inset 2px 0 0 rgba(255,255,255,.15)}
+.px-guest .g-hair::after{content:"";position:absolute;left:2px;top:-3px;width:14px;height:4px;background:inherit;box-shadow:inherit}
+.px-guest .g-head{position:absolute;left:5px;top:4px;width:16px;height:12px;background:#f0c49a;z-index:2;box-shadow:inset -3px 0 0 #d4a574,inset 2px 2px 0 rgba(255,255,255,.35)}
+.px-guest .g-head::before,.px-guest .g-head::after{content:"";position:absolute;top:4px;width:3px;height:3px;background:#1a1a1a}
+.px-guest .g-head::before{left:3px}.px-guest .g-head::after{right:3px}
+.px-guest .g-body{position:absolute;left:5px;top:15px;width:16px;height:12px;z-index:2;box-shadow:inset -3px 0 0 rgba(0,0,0,.22),inset 2px 2px 0 rgba(255,255,255,.22)}
+.px-guest .g-body::after{content:"";position:absolute;left:5px;right:5px;bottom:0;height:3px;background:rgba(0,0,0,.12)}
+.px-guest .g-legs{position:absolute;left:6px;bottom:4px;width:14px;height:10px;display:flex;justify-content:space-between;z-index:1}
+.px-guest .g-legs i{display:block;width:5px;height:10px;background:#2c3e50;box-shadow:inset -2px 0 0 rgba(0,0,0,.35);transform-origin:top center}
+.px-guest .g-legs i::after{content:"";position:absolute;bottom:0;left:0;width:6px;height:3px;background:#1a1a1a}
+.px-guest .g-legs i{position:relative}
+.px-guest.idle{animation:guestIdle .8s steps(2) infinite}
+@keyframes guestIdle{50%{transform:translateY(-1px)}}
+.px-guest.walk{animation:guestBob .18s steps(2) infinite}
+.px-guest.walk .g-legs i.L{animation:legL .18s steps(2) infinite}
+.px-guest.walk .g-legs i.R{animation:legR .18s steps(2) infinite}
+@keyframes guestBob{50%{transform:translateY(-2px)}}
+@keyframes legL{0%{transform:translateY(0) rotate(-8deg)}100%{transform:translateY(-3px) rotate(10deg)}}
+@keyframes legR{0%{transform:translateY(-3px) rotate(10deg)}100%{transform:translateY(0) rotate(-8deg)}}
+/* guest palettes — hair + shirt */
+.px-guest.look0 .g-hair,.px-guest.look0 .g-hair::after{background:#3e2723}.px-guest.look0 .g-body{background:#c0392b}
+.px-guest.look1 .g-hair,.px-guest.look1 .g-hair::after{background:#f1c40f}.px-guest.look1 .g-body{background:#2471a3}
+.px-guest.look2 .g-hair,.px-guest.look2 .g-hair::after{background:#1a1a1a}.px-guest.look2 .g-body{background:#7d3c98}
+.px-guest.look3 .g-hair,.px-guest.look3 .g-hair::after{background:#e67e22}.px-guest.look3 .g-body{background:#148f77}
+.px-guest.look4 .g-hair,.px-guest.look4 .g-hair::after{background:#7f8c8d}.px-guest.look4 .g-body{background:#c2185b}
+.px-guest.look5 .g-hair,.px-guest.look5 .g-hair::after{background:#ecf0f1}.px-guest.look5 .g-body{background:#1e8449}
+.px-guest.look6 .g-hair,.px-guest.look6 .g-hair::after{background:#5d4037}.px-guest.look6 .g-body{background:#1a5276}
+.px-guest.look7 .g-hair,.px-guest.look7 .g-hair::after{background:#922b21}.px-guest.look7 .g-body{background:#b9770e}
+.px-guest.look8 .g-hair,.px-guest.look8 .g-hair::after{background:#2c3e50}.px-guest.look8 .g-body{background:#0e6655}
+.px-guest.look9 .g-hair,.px-guest.look9 .g-hair::after{background:#b0bec5}.px-guest.look9 .g-body{background:#6c3483}
+/* walk actors (absolute over shop) — JS sets left; faces door/seat */
+.walker{position:absolute;bottom:4px;z-index:6;width:28px;text-align:center;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:0;transition:none;will-change:left}
+.walker.face-left{transform:scaleX(-1)}
+.walker.face-right{transform:scaleX(1)}
+.walker .px-guest{margin:0}
+
+/* plates between shop and kitchen */
+.plate-lbl{text-align:center;font-size:12px;font-weight:900;background:linear-gradient(#3498db,#2980b9);color:#fff;border:3px solid #1a1a1a;padding:2px 4px;margin-top:6px;box-shadow:2px 2px 0 #1a1a1a}
+.plate-row{display:flex;gap:4px;justify-content:space-between;align-items:stretch;min-height:74px;margin:4px 0 2px;flex-shrink:0;flex-wrap:nowrap;padding:0 2px}
+
+/* plate-area runner */
+.plate-stage{position:relative;flex-shrink:0;margin:4px 0 2px}
+.plate-row{min-height:74px;margin:0;padding-bottom:36px}
+.serve-runner{position:absolute;bottom:2px;z-index:3;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:42px;animation:serveMove 4.2s linear infinite}
+.serve-runner .serve-sprite{display:flex;flex-direction:column;align-items:center;animation:serveFlip 4.2s steps(1) infinite}
+.serve-runner .px-chef{transform:scale(.62);transform-origin:bottom center}
+.serve-runner .serve-tag{font-size:9px;font-weight:900;background:#3498db;color:#fff;border:2px solid #1a1a1a;padding:0 3px;white-space:nowrap;box-shadow:2px 2px 0 #1a1a1a}
+.serve-runner .px-chef.busywalk{animation:chefIdle .16s steps(2) infinite}
+.serve-runner .px-chef.busywalk .ch-legs i.L{animation:chefLegL .16s steps(2) infinite}
+.serve-runner .px-chef.busywalk .ch-legs i.R{animation:chefLegR .16s steps(2) infinite}
+.serve-runner .px-chef.busywalk .ch-arm.R{animation:stirArm .22s steps(2) infinite}
+@keyframes serveMove{
+  0%{left:4%}
+  50%{left:76%}
+  100%{left:4%}
+}
+@keyframes serveFlip{
+  0%,49.9%{transform:scaleX(1)}
+  50%,100%{transform:scaleX(-1)}
+}
+
+.plate-slot{position:relative;z-index:5;flex:1 1 0;min-width:0;max-width:92px;background:#fffef5;border:4px solid #1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 2px;box-shadow:3px 3px 0 #2980b9}
+.plate-slot.empty{opacity:.4;box-shadow:none;border-style:dashed}
+.plate-slot .ph{width:52px;height:52px;border-radius:50%;border:3px solid #1a1a1a;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-weight:900;font-size:10px;cursor:grab;box-shadow:inset -4px -4px 0 rgba(0,0,0,.2),inset 3px 3px 0 rgba(255,255,255,.35),2px 2px 0 #bdc3c7;position:relative;background:#f5f0e6}
+.plate-slot .ph .food{width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,.15)}
+.plate-slot .ph .big{font-size:22px;line-height:1}
+.plate-slot .pname{font-size:12px;font-weight:900;margin-top:3px;text-align:center;line-height:1.1}
+.plate-slot.sel .ph{outline:3px solid #e74c3c;outline-offset:1px}
+
+.kitchen{flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:4px;margin:4px 0;min-height:108px;background:
+  repeating-linear-gradient(90deg,#d7ccc8 0 12px,#cfc3bb 12px 24px),
+  linear-gradient(#c4a574,#a67c52);
+  background-blend-mode:multiply;border:4px solid #1a1a1a;padding:6px 4px 4px;box-shadow:3px 3px 0 #111;position:relative}
+.kitchen::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;background:repeating-linear-gradient(90deg,#eceff1 0 14px,#cfd8dc 14px 28px);border-bottom:3px solid #1a1a1a;opacity:.95}
+.station{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;max-width:120px;position:relative;z-index:1}
+.chef{height:48px;display:flex;align-items:flex-end;justify-content:center}
+.c-say{position:absolute;left:50%;top:-4px;transform:translateX(-50%);z-index:9;background:#fff;color:#1a1a1a;border:2px solid #1a1a1a;border-radius:8px;padding:1px 5px;font-size:13px;font-weight:900;white-space:nowrap;box-shadow:2px 2px 0 #c0392b;pointer-events:none}
+.c-say.help{white-space:normal;width:84px;text-align:center;background:#fff3b0}
+.chef-lbl{font-size:10px;font-weight:900;background:#fff;border:2px solid #1a1a1a;padding:1px 5px;box-shadow:1px 1px 0 #1a1a1a;letter-spacing:.5px}
+/* SNES / HD-2D style pixel chef sprite — tall toque + apron */
+.px-chef{position:relative;width:32px;height:48px;image-rendering:pixelated;filter:drop-shadow(1px 0 0 #1a1a1a) drop-shadow(-1px 0 0 #1a1a1a) drop-shadow(0 1px 0 #1a1a1a)}
+.px-chef .ch-shadow{position:absolute;left:4px;right:4px;bottom:0;height:5px;background:rgba(0,0,0,.3);border-radius:50%;z-index:0;pointer-events:none}
+.px-chef .ch-hat{position:absolute;left:8px;top:12px;width:16px;height:5px;background:#fffef5;z-index:4;box-shadow:inset -2px 0 0 #d5d5d5,inset 2px 0 0 rgba(255,255,255,.8)}
+.px-chef .ch-hat::before{content:"";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);width:26px;height:14px;background:#fffef5;border-radius:50% 50% 28% 28% / 62% 62% 38% 38%;box-shadow:inset -3px -1px 0 #d5d5d5,inset 3px 3px 0 rgba(255,255,255,.9),inset 0 -2px 0 rgba(0,0,0,.06)}
+.px-chef .ch-hat::after{content:"";position:absolute;left:-3px;right:-3px;bottom:-2px;height:3px;background:#fffef5;box-shadow:inset -2px 0 0 #ccc}
+.px-chef .ch-head{position:absolute;left:7px;top:16px;width:18px;height:11px;background:#f0c49a;z-index:3;box-shadow:inset -3px 0 0 #d4a574,inset 2px 2px 0 rgba(255,255,255,.35)}
+.px-chef .ch-head::before,.px-chef .ch-head::after{content:"";position:absolute;top:3px;width:3px;height:3px;background:#1a1a1a}
+.px-chef .ch-head::before{left:3px}.px-chef .ch-head::after{right:3px}
+.px-chef .ch-body{position:absolute;left:6px;top:26px;width:20px;height:14px;z-index:2;background:#ecf0f1;box-shadow:inset -3px 0 0 rgba(0,0,0,.18),inset 2px 2px 0 rgba(255,255,255,.35)}
+.px-chef .ch-apron{position:absolute;left:2px;right:2px;bottom:0;top:5px;z-index:1;box-shadow:inset -2px 0 0 rgba(0,0,0,.2),inset 2px 2px 0 rgba(255,255,255,.2)}
+.px-chef .ch-apron::before{content:"";position:absolute;left:50%;top:2px;transform:translateX(-50%);width:3px;height:3px;background:rgba(0,0,0,.25)}
+.px-chef .ch-arm{position:absolute;top:1px;width:6px;height:11px;background:#f0c49a;z-index:4;box-shadow:inset -2px 0 0 #d4a574;transform-origin:top center}
+.px-chef .ch-arm.L{left:-5px}
+.px-chef .ch-arm.R{right:-5px}
+.px-chef .ch-tool{position:absolute;left:50%;top:9px;transform:translateX(-50%);width:3px;height:12px;background:#7f8c8d;box-shadow:inset -1px 0 0 #566}
+.px-chef .ch-tool::after{content:"";position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);width:9px;height:5px;background:#95a5a6;box-shadow:inset -2px 0 0 #7f8c8d,inset 1px 1px 0 rgba(255,255,255,.3)}
+.px-chef .ch-legs{position:absolute;left:8px;bottom:4px;width:16px;height:8px;display:flex;justify-content:space-between;z-index:1}
+.px-chef .ch-legs i{display:block;width:5px;height:8px;background:#2c3e50;box-shadow:inset -2px 0 0 rgba(0,0,0,.35)}
+.px-chef.idle{animation:chefIdle .7s steps(2) infinite}
+@keyframes chefIdle{50%{transform:translateY(-1px)}}
+.px-chef.fry{animation:chefLean .28s steps(2) infinite}
+.px-chef.fry .ch-arm.R{animation:stirArm .22s steps(2) infinite}
+.px-chef.fry .ch-arm.L{animation:stirArmL .28s steps(2) infinite}
+.px-chef.fry .ch-tool{animation:stirTool .22s steps(2) infinite}
+
+.px-chef .ch-sweat{position:absolute;left:-10px;right:-10px;top:12px;height:28px;pointer-events:none;z-index:6;opacity:0;overflow:visible}
+.px-chef.fry .ch-sweat{opacity:1}
+.px-chef .ch-sweat i{position:absolute;width:4px;height:6px;background:#7fdbff;border:1px solid #1a5276;border-radius:50% 50% 45% 45%;box-shadow:inset 1px 1px 0 rgba(255,255,255,.55);opacity:0}
+.px-chef .ch-sweat i:nth-child(1){left:4px;top:2px;animation:sweatL .45s steps(4) infinite}
+.px-chef .ch-sweat i:nth-child(2){right:4px;top:2px;animation:sweatR .45s steps(4) infinite;animation-delay:.12s}
+.px-chef .ch-sweat i:nth-child(3){left:50%;top:0;margin-left:-2px;width:3px;height:5px;animation:sweatUp .5s steps(4) infinite;animation-delay:.22s}
+@keyframes sweatL{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(-14px,8px) scale(.7);opacity:0}
+}
+@keyframes sweatR{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(14px,8px) scale(.7);opacity:0}
+}
+@keyframes sweatUp{
+  0%{transform:translate(0,0) scale(1);opacity:1}
+  100%{transform:translate(4px,-10px) scale(.6);opacity:0}
+}
+.px-chef .ch-sweat i:nth-child(4){left:0;top:8px;width:3px;height:5px;animation:sweatL .4s steps(4) infinite;animation-delay:.28s}
+.px-chef .ch-sweat i:nth-child(5){right:0;top:8px;width:3px;height:5px;animation:sweatR .4s steps(4) infinite;animation-delay:.35s}
+
+
+@keyframes chefLean{50%{transform:translateX(2px) rotate(-5deg)}}
+@keyframes stirArm{0%{transform:rotate(-15deg)}100%{transform:rotate(42deg) translateY(2px)}}
+@keyframes stirArmL{50%{transform:rotate(-18deg)}}
+@keyframes stirTool{50%{transform:translateX(-50%) rotate(20deg)}}
+/* chef looks — apron / hat tint */
+.px-chef.look0 .ch-hat,.px-chef.look0 .ch-hat::before,.px-chef.look0 .ch-hat::after{background:#fffef5}
+.px-chef.look0 .ch-apron{background:#c0392b}
+.px-chef.look0 .ch-body{background:#f5e6d3}
+.px-chef.look1 .ch-hat,.px-chef.look1 .ch-hat::before,.px-chef.look1 .ch-hat::after{background:#d6eaf8}
+.px-chef.look1 .ch-apron{background:#1a5276}
+.px-chef.look1 .ch-body{background:#ebf5fb}
+.px-chef.look1 .ch-hat::before{height:16px;width:28px}
+.px-chef.look2 .ch-hat,.px-chef.look2 .ch-hat::before,.px-chef.look2 .ch-hat::after{background:#fadbd8}
+.px-chef.look2 .ch-apron{background:#196f3d}
+.px-chef.look2 .ch-body{background:#e8f8f5}
+.wok{width:54px;height:54px;max-width:54px;background:radial-gradient(circle at 40% 35%,#7a7a7a 0%,#4a4a4a 40%,#2a2a2a 70%,#151515 100%);border:4px solid #1a1a1a;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -10px 0 #111,inset 0 4px 0 rgba(255,255,255,.18),inset -6px -4px 0 rgba(0,0,0,.25),3px 3px 0 #111}
+.wok::before{content:"";position:absolute;left:10px;right:10px;top:8px;height:14px;border:2px solid rgba(255,255,255,.22);border-bottom:none;border-radius:50% 50% 0 0 / 80% 80% 0 0;pointer-events:none}
+.wok::after{content:"";position:absolute;left:50%;bottom:-3px;transform:translateX(-50%);width:18px;height:6px;background:#2a2a2a;border:3px solid #1a1a1a;border-radius:0 0 4px 4px;z-index:0;pointer-events:none}
+.wok.drop-hi,.wok.tap-hi{outline:3px solid #2ecc71;outline-offset:2px}
+.wok.cooking{background:radial-gradient(circle at 40% 35%,#f39c12 0%,#e67e22 35%,#a04000 70%,#5a2a00 100%);animation:bub .3s steps(2) infinite}
+@keyframes bub{50%{transform:scale(1.04)}}
+.wok.burnt{background:radial-gradient(circle at 40% 35%,#3a3a3a,#0a0a0a 70%)!important;animation:burnShake .25s steps(2) infinite;box-shadow:inset 0 -10px 0 #000,3px 3px 0 #111!important}.wok.burnt .wok-in{filter:brightness(0);font-size:22px}.wok .smoke{position:absolute;left:50%;top:-22px;transform:translateX(-50%);font-size:18px;line-height:1;pointer-events:none;z-index:3;filter:grayscale(1) brightness(.35);animation:smokeUp .7s steps(3) infinite}.wok.held{animation:heldBlink .4s steps(2) infinite}@keyframes heldBlink{50%{box-shadow:0 0 0 3px #e74c3c,3px 3px 0 #111}}@keyframes burnShake{50%{transform:translateX(1px)}}@keyframes smokeUp{0%{top:-14px;opacity:1}100%{top:-30px;opacity:.4}}
+.wok-in{font-size:20px;z-index:1;pointer-events:none}
+.wok .steam{position:absolute;left:50%;top:-10px;transform:translateX(-50%);font-size:13px;line-height:1;opacity:0;pointer-events:none;z-index:2}
+.wok.cooking .steam{opacity:1;animation:steamUp .6s steps(3) infinite}
+@keyframes steamUp{0%{transform:translateX(-50%) translateY(2px);opacity:.9}100%{transform:translateX(-50%) translateY(-8px);opacity:.2}}
+.wok .sparks{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:inherit}
+.wok.cooking .sparks::before,.wok.cooking .sparks::after{content:"✦";position:absolute;font-size:10px;color:#ffe566;animation:spark .4s steps(2) infinite}
+.wok.cooking .sparks::before{left:8px;top:6px}
+.wok.cooking .sparks::after{right:8px;top:10px;animation-delay:.15s}
+@keyframes spark{50%{opacity:.3;transform:scale(1.2)}}
+.cook-bar{width:100%;max-width:54px;height:6px;background:#1a1a1a;border:2px solid #1a1a1a;margin-top:2px;overflow:hidden;box-shadow:1px 1px 0 #111}
+.cook-fill{height:100%;width:0;background:linear-gradient(90deg,#f1c40f,#e67e22);box-shadow:inset 0 -1px 0 #b7950b}
+@keyframes cookFill{to{width:100%}}
+.flame{font-size:16px;height:14px;letter-spacing:-2px;line-height:1;position:relative;z-index:2}
+.flame.on{font-size:23px;height:22px;animation:flicker .18s steps(2) infinite;filter:drop-shadow(0 0 4px #ff6b00) drop-shadow(0 -2px 6px #ff9900);letter-spacing:-3px}
+.flame.on::before,.flame.on::after{content:"🔥";position:absolute;bottom:0;font-size:18px;animation:flickerSide .2s steps(2) infinite;opacity:.95}
+.flame.on::before{left:-10px;transform:scaleX(-1);animation-delay:.05s}
+.flame.on::after{right:-10px;animation-delay:.1s}
+@keyframes flicker{0%{transform:scale(1) translateY(0)}100%{transform:scale(1.25) translateY(-3px)}}
+@keyframes flickerSide{0%{transform:scale(.85) translateY(0)}100%{transform:scale(1.15) translateY(-4px)}}
+.wok.cooking{box-shadow:inset 0 -10px 0 #111,inset 0 4px 0 rgba(255,255,255,.18),0 0 12px #ff6600,0 0 22px rgba(255,100,0,.55),3px 3px 0 #111}
+.wok.cooking .sparks::before,.wok.cooking .sparks::after{font-size:14px;color:#fff3a0}
+.station .fire-base{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:48px;height:16px;pointer-events:none;z-index:0;opacity:0}
+.station .fire-base.on{opacity:1;background:radial-gradient(ellipse at 50% 100%,rgba(255,120,0,.85) 0%,rgba(255,60,0,.35) 45%,transparent 70%);animation:fireGlow .22s steps(2) infinite}
+@keyframes fireGlow{50%{transform:translateX(-50%) scale(1.15);opacity:.75}}
+
+.tray-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+/* busy prep chef pacing in tray area */
+.tray-wrap{position:relative}
+.tray-stage{position:relative;flex:1;min-height:0;display:flex;flex-direction:column}
+.prep-runner{position:absolute;bottom:6px;z-index:3;pointer-events:none;display:flex;flex-direction:column;align-items:center;width:42px;animation:prepMove 5.2s linear infinite}
+.prep-runner .prep-sprite{display:flex;flex-direction:column;align-items:center;animation:prepFlip 5.2s steps(1) infinite}
+.prep-runner .px-chef{transform:scale(.7);transform-origin:bottom center}
+.prep-runner .prep-tag{font-size:9px;font-weight:900;background:#f1c40f;color:#1a1a1a;border:2px solid #1a1a1a;padding:0 3px;margin-top:0;white-space:nowrap;box-shadow:2px 2px 0 #1a1a1a}
+.prep-runner .px-chef.busywalk{animation:chefIdle .18s steps(2) infinite}
+.prep-runner .px-chef.busywalk .ch-legs i.L{animation:chefLegL .18s steps(2) infinite}
+.prep-runner .px-chef.busywalk .ch-legs i.R{animation:chefLegR .18s steps(2) infinite}
+.prep-runner .px-chef.busywalk .ch-arm.R{animation:stirArm .25s steps(2) infinite}
+.prep-runner .px-chef.busywalk .ch-arm.L{animation:stirArmL .3s steps(2) infinite}
+@keyframes chefLegL{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
+@keyframes chefLegR{0%{transform:translateY(-3px)}100%{transform:translateY(0)}}
+@keyframes prepMove{
+  0%{left:3%}
+  50%{left:78%}
+  100%{left:3%}
+}
+@keyframes prepFlip{
+  0%,49.9%{transform:scaleX(1)}
+  50%,100%{transform:scaleX(-1)}
+}
+@keyframes prepUnflip{
+  0%,49.9%{transform:scaleX(1)}
+  50%,100%{transform:scaleX(-1)}
+}
+
+.tray-lbl{text-align:center;font-size:13px;font-weight:900;margin-bottom:4px;background:#1a1a1a;color:#fff;padding:3px;border:2px solid #fff}
+.tray{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:flex-start;overflow-y:auto;padding:4px 4px 44px;touch-action:none;background:#6d4c41;border:4px solid #1a1a1a;min-height:88px;box-shadow:inset 0 2px 0 rgba(0,0,0,.25)}
+.sticker{position:relative;z-index:5;width:72px;background:#fffef0;border:3px dashed #1a1a1a;padding:8px 2px 6px;text-align:center;cursor:grab;box-shadow:3px 3px 0 #1a1a1a;touch-action:none;background-image:radial-gradient(circle at 0 50%,transparent 4px,#fffef0 5px),radial-gradient(circle at 100% 50%,transparent 4px,#fffef0 5px);background-size:100% 12px;background-position:0 0;background-repeat:repeat-y}
+.sticker::before{content:"訂單";position:absolute;top:2px;right:3px;font-size:8px;font-weight:900;color:#c0392b;border:1px solid #c0392b;padding:0 2px;transform:rotate(8deg);line-height:1.2;background:rgba(231,76,60,.08)}
+.sticker .em{font-size:24px;line-height:1;pointer-events:none}
+.sticker .sn{font-size:12px;font-weight:900;margin-top:2px;line-height:1.1;pointer-events:none}
+.sticker.used{display:none}
+.sticker.sel{background:#fab1a0;outline:3px solid #e74c3c;background-image:none}
+.sticker.dragging{opacity:.3}
+.hint{text-align:center;font-size:12px;font-weight:700;margin-top:3px;flex-shrink:0;color:#eee}
+.prep-say{position:absolute;bottom:58px;left:50%;transform:translateX(-50%) scale(.6);background:#fff;color:#1a1a1a;border:3px solid #1a1a1a;padding:4px 8px;font-size:15px;font-weight:900;white-space:nowrap;box-shadow:3px 3px 0 #f1c40f;opacity:0;transition:opacity .12s,transform .12s;z-index:40;pointer-events:none}
+.prep-say::after{content:'';position:absolute;top:100%;left:50%;margin-left:-6px;border:6px solid transparent;border-top-color:#1a1a1a}
+.prep-say.show{opacity:1;transform:translateX(-50%) scale(1)}
+.prep-runner{z-index:30!important}
+.serve-runner{z-index:30!important}
+#serveSay{bottom:54px}
+#serveSay.big{font-size:22px;padding:6px 14px;background:#fff3b0;color:#c0392b;border-width:3px;z-index:30;animation:madShake .3s steps(2) infinite}
+.toast{position:absolute;left:50%;top:52px;transform:translateX(-50%);background:#1a1a1a;color:#fff;border:4px solid #fff;padding:6px 10px;font-size:16px;font-weight:900;opacity:0;pointer-events:none;transition:opacity .15s;z-index:40;max-width:88%;text-align:center;box-shadow:4px 4px 0 #e74c3c}
+.toast.show{opacity:1}
+#ghost{position:fixed;pointer-events:none;z-index:99;display:none;transform:translate(-50%,-50%);width:70px;text-align:center;filter:drop-shadow(4px 4px 0 #1a1a1a)}
+#ghost .box{background:#fffef0;border:3px dashed #e74c3c;padding:6px 2px;position:relative}
+#ghost .box::before{content:"訂單";position:absolute;top:1px;right:2px;font-size:8px;font-weight:900;color:#c0392b}
+#ghost .em{font-size:24px;line-height:1}
+#ghost .sn{font-size:12px;font-weight:900}
+#s-play{background:#3e2723;padding-top:6px}
+
+/* guest review float */
+.review-pop{position:absolute;z-index:12;pointer-events:none;max-width:170px;background:#fff;border:3px solid #1a1a1a;padding:5px 7px;font-size:16px;font-weight:900;line-height:1.35;color:#1a1a1a;box-shadow:3px 3px 0 #e74c3c;animation:reviewFloat 1.6s steps(8) forwards;text-align:center}
+.review-pop .stars{color:#f1c40f;font-size:14px;letter-spacing:1px;display:block;margin-bottom:2px;text-shadow:1px 1px 0 #1a1a1a}
+.review-pop::after{content:"";position:absolute;bottom:-7px;left:18px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:7px solid #1a1a1a}
+.review-pop::before{content:"";position:absolute;bottom:-4px;left:20px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #fff;z-index:1}
+@keyframes reviewFloat{
+  0%{opacity:0;transform:translateY(8px) scale(.9)}
+  12%{opacity:1;transform:translateY(0) scale(1)}
+  70%{opacity:1;transform:translateY(-18px)}
+  100%{opacity:0;transform:translateY(-36px)}
+}
+
+
+/* sit: hide legs under table */
+.px-guest.sit .g-legs,.px-guest.sit .g-shadow{display:none}
+.px-guest.sit{height:30px}
+#s-end.on .box,#s-end.on>div{animation:endPop .45s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes endPop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes newRec{50%{transform:scale(1.08)}}
+#endScore{font-size:34px!important}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="s-start" class="screen on">
+    <div class="center"><i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+      <div class="logo" style="display:flex;align-items:flex-end;justify-content:center;gap:10px;height:56px">
+        <div class="px-chef look0 idle" aria-hidden="true" style="transform:scale(1.15)"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div><div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i></i><i></i></div></div>
+        <span style="font-size:28px;line-height:1;filter:drop-shadow(2px 2px 0 #1a1a1a)">🍲</span>
+        <div class="px-guest look1 walk" aria-hidden="true" style="transform:scale(1.15)"><div class="g-shadow"></div><div class="g-hair"></div><div class="g-head"></div><div class="g-body"></div><div class="g-legs"><i class="L"></i><i class="R"></i></div></div>
+      </div>
+      <div class="px-banner"><h1 style="margin:0;font-size:26px">寶飽煲小館</h1></div>
+      <div class="steps">
+        ① 客人走進門、坐到桌後點菜（最多 6 桌）<br>
+        ② 下方貼圖＝客人點的菜（沒有多餘）<br>
+        ③ 拖貼圖給空閒廚師炒，再端盤給客人<br>
+        ④ 60 秒內服務越多客人越高分！
+      </div>
+      <p class="hi" id="hiScore">最高分：0</p>
+      <button class="btn big" id="btnStart">開始營業</button>
+    </div>
+  </div>
+
+  <div id="s-play" class="screen">
+    <div class="hud">
+      <span class="pill" id="hudDone">服務 0 位</span>
+      <span class="pill" id="hudScore">分數 0</span>
+      <span class="pill" id="hudTime">⏱ 60</span>
+      <span class="pill" id="musicBtn" style="cursor:pointer" onclick="music.toggle()">🔊</span>
+    </div>
+    <div class="shop" id="shop">
+      <div class="shop-sky">
+        <div class="sun"></div>
+        <div class="cloud c1"></div>
+        <div class="cloud c2"></div>
+      </div>
+      <div class="shop-facade"></div>
+      <div class="shop-lantern">🏮</div>
+      <div class="shop-plant">🪴</div>
+      <div class="shop-window"></div>
+      <div class="shop-vsign">寶飽煲</div>
+      <div class="shop-door" id="door"><div class="door-panel"></div><div class="knob"></div></div>
+      <div class="shop-floor" id="custs"></div>
+      <div id="walkLayer"></div>
+    </div>
+    <div class="plate-lbl">⬆ 出菜區 · 拖給上方客人</div>
+    <div class="plate-stage">
+      <div class="serve-runner" aria-hidden="true">
+        <div class="serve-sprite">
+          <div class="px-chef look1 busywalk"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div><div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i class="L"></i><i class="R"></i></div></div>
+        </div>
+        <div class="serve-tag">出菜</div>
+        <div class="prep-say" id="serveSay"></div>
+      </div>
+      <div class="plate-row" id="plates"></div>
+    </div>
+    <div class="kitchen" id="kitchen"></div>
+    <div class="tray-wrap">
+      <div class="tray-lbl" id="trayLbl">訂單貼圖（＝在場客人）→ 空閒鍋</div>
+      <div class="tray-stage">
+        <div class="prep-runner" aria-hidden="true">
+          <div class="prep-sprite">
+            <div class="px-chef look0 busywalk"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div><div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i class="L"></i><i class="R"></i></div></div>
+          </div>
+          <div class="prep-tag">備料忙</div>
+          <div class="prep-say" id="prepSay"></div>
+        </div>
+        <div class="tray" id="tray"></div>
+      </div>
+    </div>
+    <div class="hint" id="hint">也可：先點貼圖 → 再點空閒鍋／客人</div>
+    
+  </div>
+
+  <div id="s-end" class="screen">
+    <div class="center">
+      <div class="cta cta-top"><div style="font-size:22px;font-weight:900;color:#c0392b;letter-spacing:1px">來寶飽煲小館吃真的！</div>台北市士林區福壽街3號<br>📞 <a href="tel:0228313481" style="color:inherit;font-weight:900">02-2831-3481</a><br><a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;background:#e74c3c;color:#fff;border:3px solid #1a1a1a;padding:6px 14px;font-size:17px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a></div>
+      <h1 id="endTitle">打烊了！</h1>
+      <div class="stars" id="endStars">★★★</div>
+      <p style="font-size:22px;font-weight:900;background:#fff;border:4px solid #1a1a1a;padding:6px 12px;box-shadow:3px 3px 0 #1a1a1a" id="endScore">0 分</p>
+      <p class="hi" id="endBest">最高分：0</p>
+      <p class="hi" id="endServed">共服務 0 位客人</p>
+      <p class="hi" id="endLost"></p>
+      <div id="endNew" style="display:none;font-size:20px;font-weight:900;color:#fff;background:#e74c3c;border:3px solid #1a1a1a;padding:4px 10px;box-shadow:3px 3px 0 #1a1a1a;animation:newRec .5s steps(2) infinite">🏆 新紀錄！</div>
+      <button class="btn big" id="btnAgain" style="margin-top:12px">再來一局</button>
+      <button class="btn sec" id="btnHome" style="margin-top:8px;width:100%;max-width:300px">回主選單</button>
+    </div>
+  </div>
+</div>
+<div id="ghost"><div class="box"><div class="em"></div><div class="sn"></div></div></div>
+<script>
+(function(){
+'use strict';
+const GUEST_LOOKS=10;
+function guestPuppet(look, mode){
+  const L=((look%GUEST_LOOKS)+GUEST_LOOKS)%GUEST_LOOKS;
+  let cls='idle';
+  if(mode==='walk') cls='walk';
+  else if(mode==='sit' || (mode && String(mode).indexOf('sit')>=0)) cls='idle sit';
+  return `<div class="px-guest look${L} ${cls}" aria-hidden="true"><div class="g-shadow"></div><div class="g-hair"></div><div class="g-head"></div><div class="g-body"></div><div class="g-legs"><i class="L"></i><i class="R"></i></div></div>`;
+}
+function chefPuppet(look, frying){
+  const L=look%3;
+  const sweat=frying?'<div class="ch-sweat"><i></i><i></i><i></i><i></i><i></i></div>':'';
+  return `<div class="px-chef look${L}${frying?' fry':' idle'}" aria-hidden="true"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div>${sweat}<div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i></i><i></i></div></div>`;
+}
+const DISHES=[
+  {id:'ribs',n:'蜜汁排骨',e:'🍖', color:'#c0392b'},
+  {id:'kungpao',n:'宮保雞丁',e:'🌶️', color:'#e67e22'},
+  {id:'beef',n:'紅燒牛腩',e:'🥩', color:'#922b21'},
+  {id:'noodle',n:'什錦湯麵',e:'🍜', color:'#d4a017'},
+  {id:'shrimp',n:'蝦仁炒飯',e:'🦐', color:'#f39c12'}
+];
+const GOAL=12, MAX_GUESTS=6, ROUND=60, COOK_MS=2800, EAT_MS=2600, SPAWN_MS=900, WALK_IN_MS=850, WALK_OUT_MS=700, WAIT_MAD_MS=9000, WAIT_ANGRY_MS=16000, WAIT_LEAVE_MS=22000;
+const LS='bbb_match_v5_hi';
+const $=id=>document.getElementById(id);
+let G=null, timer=null, spawnTimer=null, audioCtx=null;
+let drag=null, sel=null;
+
+function beep(f,d,type,v){
+  try{
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type||'square'; o.frequency.value=f;
+    g.gain.value=v||0.07;
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+(d||0.08));
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(); o.stop(audioCtx.currentTime+(d||0.08));
+  }catch(e){}
+}
+function ac(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function sizzle(dur,v){
+  try{const c=ac();const n=Math.floor(c.sampleRate*dur);const b=c.createBuffer(1,n,c.sampleRate);const d=b.getChannelData(0);
+    for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(Math.random()<.3?1:.35);
+    const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type='highpass';f.frequency.value=2500;
+    const g=c.createGain();g.gain.setValueAtTime(v||.06,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
+    s.connect(f);f.connect(g);g.connect(c.destination);s.start();}catch(e){}
+}
+const sfx={
+  tap:()=>beep(500,.04,'square',.05),
+  cook:()=>{sizzle(1.2,.07);beep(220,.06,'square',.04)},
+  ready:()=>{beep(1318,.15,'triangle',.08);setTimeout(()=>beep(1760,.25,'triangle',.07),90)},
+  ok:()=>{beep(523,.05);setTimeout(()=>beep(659,.05),70);setTimeout(()=>beep(784,.12),140)},
+  bad:()=>beep(140,.15,'sawtooth',.06),
+  angry:()=>{beep(180,.1,'sawtooth',.06);setTimeout(()=>beep(150,.18,'sawtooth',.06),110)},
+  enter:()=>{beep(880,.05,'triangle',.05);setTimeout(()=>beep(660,.08,'triangle',.05),80)},
+  plate:()=>beep(1200,.05,'triangle',.05),
+  win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.1),i*90))},
+  lose:()=>{[392,330,262].forEach((f,i)=>setTimeout(()=>beep(f,.12),i*100))}
+};
+/* chiptune BGM */
+const music={on:(()=>{try{return localStorage.getItem('bbb_music')!=='0'}catch(e){return true}})(),timer:null,step:0,
+  mel:[72,0,76,79,76,0,74,72,69,0,72,74,76,0,72,0, 74,0,77,81,79,77,76,74,72,0,76,74,72,0,0,0],
+  bass:[48,55,52,55,45,52,48,52,50,57,53,57,43,50,47,50],
+  start(){if(!this.on||this.timer)return;try{ac().resume()}catch(e){}
+    this.timer=setInterval(()=>{const i=this.step++;const m=this.mel[i%32];
+      if(!G||!G.run){this.stop();return}
+      if(m)beep(440*Math.pow(2,(m-69)/12),.16,'square',.025);
+      if(i%2===0){const b=this.bass[(i/2|0)%16];beep(440*Math.pow(2,(b-69)/12),.2,'triangle',.05)}
+      if(i%4===2)sizzle(.03,.02);
+    },170)},
+  stop(){clearInterval(this.timer);this.timer=null},
+  toggle(){this.on=!this.on;try{localStorage.setItem('bbb_music',this.on?'1':'0')}catch(e){}
+    if(this.on&&G&&G.run)this.start();else this.stop();
+    const b=document.getElementById('musicBtn');if(b)b.textContent=this.on?'🔊':'🔇'}
+};
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on')}
+function toast(t,ms){const e=$(/端|送|盤|惠顧|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
+function hiGet(){try{return +(localStorage.getItem(LS)||0)}catch(e){return window.__hi||0}}
+function hiSet(n){if(n>hiGet()){window.__hi=n;try{localStorage.setItem(LS,String(n))}catch(e){}}}
+function refreshHi(){$('hiScore').textContent='最高分：'+hiGet()}
+function dishById(id){return DISHES.find(d=>d.id===id)}
+
+function buildRound(){
+  return {
+    chefs:[0,1,2,3].map(i=>({id:'k'+i, look:i, cooking:null})),
+    guests:[], plates:[], stickers:[],
+    served:0, spawned:0, score:0, time:ROUND, run:true,
+    nextFace:0, stickerSeq:0, guestSeq:0
+  };
+}
+function activeGuests(){return G.guests.filter(g=>g.status==='waiting'||g.status==='entering'||g.status==='eating')}
+function seatedGuests(){return G.guests.filter(g=>g.status==='waiting')}
+function canSpawn(){return G.run && activeGuests().length<MAX_GUESTS}
+function takenSeats(){
+  const s=new Set();
+  G.guests.forEach(g=>{
+    if((g.status==='waiting'||g.status==='entering'||g.status==='eating'||g.status==='leaving') && g.seatIndex!=null) s.add(g.seatIndex);
+  });
+  return s;
+}
+function freeSeatIndex(){
+  const taken=takenSeats();
+  for(let i=0;i<MAX_GUESTS;i++) if(!taken.has(i)) return i;
+  return -1;
+}
+/** left px of seat i relative to shop, for walker positioning */
+function seatWalkerLeft(seatIndex){
+  const shop=$('shop');
+  const floor=$('custs');
+  if(!shop||!floor) return 20+seatIndex*40;
+  const slot=floor.querySelector(`[data-si="${seatIndex}"]`);
+  const shopR=shop.getBoundingClientRect();
+  if(slot){
+    const r=slot.getBoundingClientRect();
+    return Math.round(r.left-shopR.left+(r.width/2)-14);
+  }
+  // fallback percentages of floor width
+  const fw=floor.clientWidth||shop.clientWidth;
+  const pct=(seatIndex+.3)/MAX_GUESTS;
+  return Math.round(fw*pct);
+}
+function doorWalkerLeft(){
+  const shop=$('shop');
+  if(!shop) return 280;
+  return Math.max(40, shop.clientWidth-48);
+}
+
+/** Rebuild stickers = exactly one per waiting guest not yet cooking for that guest's sticker claim.
+ *  Rule: each waiting guest owns one sticker (by guestId). Cooking marks sticker used.
+ *  Entering guests get sticker only after seated (waiting). */
+/** Remove plates nobody can eat: guest left / stormed out / not waiting for that plate. */
+function pruneOrphanPlates(){
+  if(!G) return;
+  const waiting=seatedGuests();
+  const waitingIds=new Set(waiting.map(g=>g.custId));
+  const wantDish=new Set(waiting.map(g=>g.dishId));
+  const before=G.plates.length;
+  G.plates=G.plates.filter(p=>{
+    if(p.guestId){
+      // reserved for a table — only keep if that guest is still waiting
+      return waitingIds.has(p.guestId);
+    }
+    // legacy / unbound plate — keep only if someone still wants this dish
+    return wantDish.has(p.dishId);
+  });
+  return G.plates.length!==before;
+}
+function syncTray(){
+  pruneOrphanPlates();
+  const waiting=seatedGuests();
+  const waitingIds=new Set(waiting.map(g=>g.custId));
+  // Drop stickers for guests who left
+  G.stickers=G.stickers.filter(s=>s.guestId && waitingIds.has(s.guestId));
+  const byGuest={};
+  G.stickers.forEach(s=>{ if(s.guestId) byGuest[s.guestId]=s; });
+  waiting.forEach(g=>{
+    const cookingFor=G.chefs.some(c=>c.cooking&&!c.cooking.burnt&&c.cooking.guestId===g.custId);
+    const platedFor=G.plates.some(p=>p.guestId===g.custId);
+    // Already in wok or ready on plate → no tray material needed
+    if(cookingFor || platedFor){
+      // hide/remove tray sticker for this guest
+      G.stickers=G.stickers.filter(s=>s.guestId!==g.custId);
+      delete byGuest[g.custId];
+      return;
+    }
+    let s=byGuest[g.custId];
+    if(!s || s.used){
+      // recreate if missing or stuck used (e.g. plate stolen by same-dish guest)
+      if(s) G.stickers=G.stickers.filter(x=>x.id!==s.id);
+      s={id:'s'+(G.stickerSeq++), dishId:g.dishId, guestId:g.custId, used:false, t0:performance.now()};
+      G.stickers.push(s);
+      byGuest[g.custId]=s;
+    }else{
+      s.dishId=g.dishId;
+      s.used=false;
+    }
+  });
+}
+
+function openDoor(ms){
+  const d=$('door'); if(!d) return;
+  d.classList.add('open');
+  clearTimeout(d._t);
+  d._t=setTimeout(()=>d.classList.remove('open'), ms||WALK_IN_MS);
+}
+
+function playWalkIn(guest, cb){
+  openDoor(WALK_IN_MS);
+  const layer=$('walkLayer');
+  const el=document.createElement('div');
+  el.className='walker face-left';
+  el.innerHTML=guestPuppet(guest.look,'walk');
+  const startX=doorWalkerLeft();
+  const endX=seatWalkerLeft(guest.seatIndex);
+  el.style.left=startX+'px';
+  el.style.bottom='4px';
+  layer.appendChild(el);
+  // reflow then transition to seat
+  void el.offsetWidth;
+  el.style.transition='left '+WALK_IN_MS+'ms steps(8)';
+  requestAnimationFrame(()=>{ el.style.left=endX+'px'; });
+  setTimeout(()=>{
+    el.remove();
+    if(cb) cb();
+  }, WALK_IN_MS+30);
+}
+
+
+const REVIEWS=[
+  {t:'超好吃！下次還來！', s:'★★★★★'},
+  {t:'這味對了，五星！', s:'★★★★★'},
+  {t:'份量剛好，讚。', s:'★★★★☆'},
+  {t:'老闆手藝穩！', s:'★★★★★'},
+  {t:'吃完還想再點。', s:'★★★★★'},
+  {t:'熱呼呼的好幸福。', s:'★★★★☆'},
+  {t:'跟朋友說一定要來！', s:'★★★★★'},
+  {t:'CP 值爆高。', s:'★★★★☆'},
+  {t:'整桌都搶著吃！', s:'★★★★★'},
+  {t:'寶飽煲沒讓我失望。', s:'★★★★★'}
+];
+const DISH_REVIEWS={
+  ribs:['蜜汁排骨入味！','排骨軟嫩超讚！'],
+  kungpao:['宮保雞丁夠味！','麻辣剛剛好！'],
+  beef:['牛腩燉得透！','紅燒牛腩大滿足！'],
+  noodle:['湯麵好暖心！','麵條Ｑ彈！'],
+  shrimp:['蝦仁炒飯粒粒分明！','炒飯好香！']
+};
+function pickReview(dishId){
+  const pool=[];
+  (DISH_REVIEWS[dishId]||[]).forEach(t=>pool.push({t,s:'★★★★★'}));
+  pool.push(...REVIEWS);
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function showGuestReview(guest){
+  const layer=$('walkLayer'); if(!layer) return;
+  const r=pickReview(guest.dishId);
+  const el=document.createElement('div');
+  el.className='review-pop';
+  el.innerHTML=`<span class="stars">${r.s}</span>${r.t}`;
+  const x=guest.seatIndex!=null ? seatWalkerLeft(guest.seatIndex) : 40;
+  el.style.left=Math.max(4, x-20)+'px';
+  el.style.bottom='52%';
+  layer.appendChild(el);
+  setTimeout(()=>el.remove(),1650);
+}
+
+function playWalkOut(guest, cb){
+  openDoor(WALK_OUT_MS);
+  const layer=$('walkLayer');
+  const el=document.createElement('div');
+  el.className='walker face-right';
+  el.innerHTML=guestPuppet(guest.look,'walk');
+  const startX=guest.seatIndex!=null ? seatWalkerLeft(guest.seatIndex) : 40;
+  const endX=doorWalkerLeft();
+  el.style.left=startX+'px';
+  el.style.bottom='4px';
+  layer.appendChild(el);
+  void el.offsetWidth;
+  el.style.transition='left '+WALK_OUT_MS+'ms steps(7)';
+  requestAnimationFrame(()=>{ el.style.left=endX+'px'; });
+  setTimeout(()=>{ el.remove(); if(cb) cb(); }, WALK_OUT_MS+30);
+}
+
+function spawnGuest(){
+  if(!canSpawn()) return null;
+  const seat=freeSeatIndex();
+  if(seat<0) return null;
+  const d=DISHES[Math.floor(Math.random()*DISHES.length)];
+  const g={
+    custId:'c'+(G.guestSeq++),
+    look:G.nextFace++%GUEST_LOOKS,
+    dishId:d.id,
+    status:'entering',
+    seatIndex:seat
+  };
+  G.guests.push(g);
+  G.spawned++;
+  sfx.enter();
+  renderAll(); // tables stay; walker goes to seat
+  playWalkIn(g, ()=>{
+    if(!G||!G.run) return;
+    const gg=G.guests.find(x=>x.custId===g.custId);
+    if(gg && gg.status==='entering'){
+      gg.status='waiting'; // seated → speak order bubble
+      gg.waitT0=performance.now();
+      gg.madLevel=0;
+      syncTray();
+      renderAll();
+    }
+  });
+  return g;
+}
+
+function renderAll(){if(G)pruneOrphanPlates();renderHud();renderCusts();renderKitchen();renderPlates();renderTray();updateHint()}
+function renderHud(){
+  $('hudDone').textContent='服務 '+G.served+' 位';
+  $('hudScore').textContent='分數 '+G.score;
+  $('hudTime').textContent='⏱ '+Math.max(0,Math.ceil(G.time));
+}
+function renderCusts(){
+  const bySeat={};
+  G.guests.forEach(g=>{
+    if(g.seatIndex==null) return;
+    if(g.status==='waiting'||g.status==='entering'||g.status==='eating') bySeat[g.seatIndex]=g;
+  });
+  let html='';
+  for(let i=0;i<MAX_GUESTS;i++){
+    const o=bySeat[i];
+    if(o && o.status==='waiting'){
+      const d=dishById(o.dishId);
+      const mad=o.madLevel||0;
+      const madCls=mad>=1?' mad':'';
+      const mine=G.mineDish===o.dishId&&performance.now()<G.mineUntil;
+      const chat=(!mad&&G.chat&&G.chat.id===o.custId&&performance.now()<G.chat.until)?G.chat.text:'';
+      const complain=mine?'<div class="g-say mine-say">我的！</div>':chat?'<div class="g-say chat-say">'+chat+'</div>':mad>=2?'<div class="g-say"><b class="gf">😡</b>'+['快點啦！','還不來？！','我要走了！'][(+o.custId.slice(1))%3]+'</div>':(mad>=1?'<div class="g-say"><b class="gf">😒</b>'+['好久喔…','怎麼還沒來','等好久'][(+o.custId.slice(1))%3]+'</div>':'');
+      html+=`<div class="seat-slot cust waiting${madCls}" data-si="${i}" data-cust="${o.custId}" data-dish="${o.dishId}">
+        ${complain}<div class="bubble"><div class="want">${d.e}</div><div class="want-n">${d.n.slice(0,2)}<br>${d.n.slice(2)}</div></div>
+        <div class="puppet-zone">${guestPuppet(o.look,'sit')}</div>
+        <div class="table"><div class="tb-plate"></div><i class="tl l1"></i><i class="tl l2"></i></div>
+      </div>`;
+    }else if(o && o.status==='eating'){
+      const d=dishById(o.dishId);
+      const elapsed=Math.min(EAT_MS, performance.now()-(o.eatT0||performance.now()));
+      const rem=Math.max(40, EAT_MS-elapsed);
+      const startPct=(elapsed/EAT_MS)*100;
+      html+=`<div class="seat-slot eating" data-si="${i}" data-cust="${o.custId}">
+        <div class="puppet-zone">${guestPuppet(o.look,'sit')}</div>
+        <div class="eat-bar"><div class="eat-fill" style="width:${startPct}%;animation:cookFill ${rem}ms linear forwards"></div></div>
+        <div class="table"><div class="tb-plate"></div><span class="food-on">${d.e}</span><i class="tl l1"></i><i class="tl l2"></i></div>
+      </div>`;
+    }else{
+      html+=`<div class="seat-slot empty" data-si="${i}">
+        <div class="table"><i class="tl l1"></i><i class="tl l2"></i></div>
+      </div>`;
+    }
+  }
+  $('custs').innerHTML=html;
+}
+function renderKitchen(){
+  $('kitchen').innerHTML=G.chefs.map(c=>{
+    const busy=!!c.cooking, burnt=busy&&c.cooking.burnt, held=busy&&c.cooking.held;
+    const d=busy?dishById(c.cooking.dishId):null;
+    let bar='';
+    if(busy){
+      const elapsed=(burnt||held)?COOK_MS:Math.min(COOK_MS, performance.now()-c.cooking.t0);
+      const rem=Math.max(40, COOK_MS-elapsed);
+      const startPct=(elapsed/COOK_MS)*100;
+      bar=`<div class="cook-bar"><div class="cook-fill" style="width:${startPct}%;animation:cookFill ${rem}ms linear forwards"></div></div>`;
+    }
+    return `<div class="station" data-chef="${c.id}" style="position:relative">
+      ${(G.chefSay&&G.chefSay.id===c.id&&performance.now()<G.chefSay.until)?`<div class="c-say${G.chefSay.text.replace(/^\S+ /,"").length>5?' help':''}">${G.chefSay.text}</div>`:''}<div class="chef">${chefPuppet(c.look, busy)}</div>
+      <div class="chef-lbl">${CHEF_NAMES[+c.id.slice(1)]}</div>
+      <div class="wok ${burnt?'burnt':busy?'cooking':'free'}${held?' held':''}" data-wok="${c.id}">${burnt?'<div class="smoke">💨💨</div>':''}
+        <div class="steam">${busy&&!burnt?'💨💨':''}</div>
+        <div class="sparks"></div>
+        <div class="wok-in">${busy?d.e:'<span style="opacity:.45;font-size:10px;font-weight:900">空閒</span>'}</div>
+      </div>
+      ${burnt?'':bar}
+      <div class="fire-base${busy?' on':''}"></div>
+      <div class="flame${busy?' on':''}">${burnt?'🔥':busy?'🔥🔥🔥':'🔥'}</div>
+    </div>`;
+  }).join('');
+}
+function renderPlates(){
+  const bySlot={};
+  (G.plates||[]).forEach(p=>{
+    let s=p.slot;
+    if(s==null || s<0 || s>3 || bySlot[s]!=null){
+      // legacy / collision — park in first free
+      for(let i=0;i<4;i++){ if(bySlot[i]==null){ s=i; break; } }
+      p.slot=s;
+    }
+    bySlot[s]=p;
+  });
+  const slots=[];
+  for(let i=0;i<4;i++){
+    const p=bySlot[i];
+    if(p){
+      const d=dishById(p.dishId);
+      slots.push(`<div class="plate-slot" data-plate="${p.id}" data-slot="${i}">
+        <div class="ph" data-plate-drag="${p.id}" data-dish="${p.dishId}">
+          <div class="food" style="background:${d.color}"><span class="big">${d.e}</span></div>
+        </div>
+        <div class="pname">${d.n}</div>
+      </div>`);
+    }else{
+      slots.push(`<div class="plate-slot empty" data-slot="${i}"><div style="font-size:12px;font-weight:900;opacity:.7">空</div></div>`);
+    }
+  }
+  $('plates').innerHTML=slots.join('');
+}
+function renderTray(){
+  syncTray();
+  const unused=G.stickers.filter(s=>!s.used);
+  $('tray').innerHTML=unused.map(s=>{
+    const d=dishById(s.dishId);
+    return `<div class="sticker" data-sticker="${s.id}" data-dish="${s.dishId}">
+      <div class="em">${d.e}</div><div class="sn">${d.n}</div>
+    </div>`;
+  }).join('') || '<div style="font-size:14px;font-weight:800;color:#fff;padding:8px">等待客人走進店…</div>';
+}
+function updateHint(){
+  if(G.plates.length){
+    $('trayLbl').textContent='拖盤子 → 點了這道菜的客人';
+    $('hint').textContent='也可：先點盤子 → 再點對的客人';
+  }else{
+    $('trayLbl').textContent='訂單貼圖（＝在場客人）→ 空閒鍋';
+    $('hint').textContent='也可：先點貼圖 → 再點空閒鍋（單手）';
+  }
+}
+function clearHi(){document.querySelectorAll('.drop-hi,.tap-hi,.sel').forEach(e=>e.classList.remove('drop-hi','tap-hi','sel'))}
+const CHEF_NAMES=['阿屯師','阿任師','阿喜師','阿孟師'];
+function freeChef(){return G.chefs.find(c=>!c.cooking)}
+function chefById(id){return G.chefs.find(c=>c.id===id)}
+
+function chefSay(id,text,ms){
+  G.chefSay={id,text,until:performance.now()+(ms||1300)}; renderKitchen();
+  setTimeout(()=>{if(G&&G.chefSay&&performance.now()>=G.chefSay.until-30)renderKitchen()},(ms||1300)+40);
+}
+function startCook(stickerId, chefId){
+  if(!G||!G.run) return false;
+  const st=G.stickers.find(s=>s.id===stickerId);
+  if(!st||st.used) return false;
+  const owner=seatedGuests().find(o=>o.custId===st.guestId);
+  if(!owner || owner.dishId!==st.dishId){sfx.bad();toast('這張訂單失效了');syncTray();renderTray();return false}
+  const waiting=seatedGuests().filter(o=>o.dishId===st.dishId);
+  if(!waiting.length){sfx.bad();toast('沒人點這道！');return false}
+  let chef=chefId?chefById(chefId):null;
+  if(chef&&chef.cooking){sfx.bad();toast('這位廚師在忙');return false}
+  if(!chef) chef=freeChef();
+  if(!chef){sfx.bad();toast('四位廚師都在炒！');return false}
+  st.used=true;
+  chef.cooking={dishId:st.dishId, stickerId, guestId:st.guestId, t0:performance.now()};
+  sfx.cook();
+  G.streak=(G.lastChef===chef.id)?(G.streak||1)+1:1; G.lastChef=chef.id;
+  syncTray();
+  renderAll();
+  if(G.streak>=3){ chefSay(chef.id,'😩 你們也幫忙炒一下！',1800); }
+  else { const L=['😤 下鍋！','😄 來囉！','😎 看我的！','🔥 火開大！','💪 交給我！']; chefSay(chef.id,L[Math.floor(Math.random()*L.length)]); }
+  const cid=chef.id;
+  setTimeout(()=>finishCook(cid), COOK_MS);
+  return true;
+}
+
+function occupiedSlots(){
+  const used=new Set();
+  (G.plates||[]).forEach(p=>{ if(p.slot!=null) used.add(p.slot); });
+  return used;
+}
+function freePlateSlot(){
+  const used=occupiedSlots();
+  for(let i=0;i<4;i++){ if(!used.has(i)) return i; }
+  return -1;
+}
+function finishCook(chefId){
+  if(!G||!G.run) return;
+  const chef=chefById(chefId);
+  if(!chef||!chef.cooking) return;
+  const dishId=chef.cooking.dishId;
+  const guestId=chef.cooking.guestId||null;
+  if(chef.cooking.burnt) return;
+  const slot=freePlateSlot();
+  if(slot<0){
+    if(!chef.cooking.held){ chef.cooking.held=performance.now(); chefSay(chef.id,'😰 快端走！',1400); }
+    else if(performance.now()-chef.cooking.held>5000){ burnWok(chef); return; }
+    renderKitchen(); setTimeout(()=>finishCook(chefId),250); return;
+  }
+  chef.cooking=null;
+  G.plates.push({id:'p'+Date.now()+Math.random().toString(36).slice(2,5), dishId, guestId, slot});
+  sfx.ready(); toast('好了！端給客人');
+  syncTray();
+  renderAll();
+}
+function burnWok(chef){
+  const ck=chef.cooking; ck.burnt=true; ck.held=false;
+  const st=G.stickers.find(s=>s.id===ck.stickerId);
+  if(st && seatedGuests().some(o=>o.custId===st.guestId)) st.used=false;
+  sfx.bad(); chefSay(chef.id,'😱 燒焦啦！重炒！',2200);
+  syncTray(); renderAll();
+  setTimeout(()=>{ if(G&&chef.cooking===ck){ chef.cooking=null; renderAll(); } },2500);
+}
+function finishEating(custId){
+  if(!G||!G.run) return;
+  const cust=G.guests.find(o=>o.custId===custId);
+  if(!cust||cust.status!=='eating') return;
+  cust.status='leaving';
+  G.served++;
+  G.score+=20+Math.floor(G.time/5);
+  sfx.ok(); toast('謝謝惠顧！');
+  const snapshot={...cust};
+  showGuestReview(snapshot);
+  renderAll();
+  playWalkOut(snapshot, ()=>{
+    if(!G) return;
+    G.guests=G.guests.filter(g=>g.custId!==cust.custId);
+    syncTray();
+    renderAll();
+  });
+}
+function deliverPlate(plateId, custId){
+  if(!G||!G.run) return false;
+  const plate=G.plates.find(p=>p.id===plateId);
+  const cust=G.guests.find(o=>o.custId===custId);
+  if(!plate||!cust) return false;
+  if(cust.status==='eating'){sfx.bad();toast('這位正在吃');return false}
+  if(cust.status!=='waiting'){sfx.bad();toast('這位還在進門');return false}
+  if(cust.dishId!==plate.dishId){
+    sfx.bad(); toast('送錯人！要「'+dishById(cust.dishId).n+'」');
+    G.score=Math.max(0,G.score-5); renderHud(); return false;
+  }
+  if(plate.guestId && plate.guestId!==cust.custId){
+    const a=plate.guestId,b=cust.custId,sw=x=>x===a?b:(x===b?a:x);
+    G.plates.forEach(q=>{if(q!==plate)q.guestId=sw(q.guestId)});
+    G.stickers.forEach(s=>s.guestId=sw(s.guestId));
+    G.chefs.forEach(c=>{if(c.cooking)c.cooking.guestId=sw(c.cooking.guestId)});
+    plate.guestId=b;
+  }
+  cust.status='eating';
+  cust.eatT0=performance.now();
+  G.plates=G.plates.filter(p=>p.id!==plateId);
+  sfx.ok(); toast('開動！');
+  syncTray();
+  renderAll();
+  const cid=cust.custId;
+  setTimeout(()=>finishEating(cid), EAT_MS);
+  return true;
+}
+
+function guestStormOut(custId, reason){
+  if(!G||!G.run) return;
+  const cust=G.guests.find(o=>o.custId===custId);
+  if(!cust||cust.status!=='waiting') return;
+  cust.status='leaving';
+  // cancel wok / plates for this guest so uneaten food disappears
+  G.chefs.forEach(c=>{
+    if(c.cooking && c.cooking.guestId===custId) c.cooking=null;
+  });
+  G.plates=G.plates.filter(p=>p.guestId!==custId);
+  G.stickers=G.stickers.filter(s=>s.guestId!==custId);
+  G.score=Math.max(0,G.score-15);
+  G.lost=(G.lost||0)+1;sfx.angry();{const s=document.querySelector('.shop-sky');if(s){const c=document.createElement('div');c.className='crow';c.innerHTML='<svg width="34" height="22" viewBox="0 0 34 22"><g class="wu"><path d="M14 11 L4 1 L10 2 L17 9 Z M20 11 L28 1 L23 2 L17 9 Z" fill="#111"/></g><g class="wd"><path d="M14 11 L3 19 L9 18 L17 13 Z M20 11 L30 19 L25 18 L17 13 Z" fill="#111"/></g><ellipse cx="17" cy="12" rx="8" ry="3.5" fill="#111"/><circle cx="26" cy="10.5" r="3" fill="#111"/><path d="M28.5 10 L33 11 L28.5 12 Z" fill="#f5a623"/><circle cx="26.8" cy="9.8" r=".8" fill="#fff"/><path d="M9 12 L4 10 L4 15 Z" fill="#111"/></svg>';s.appendChild(c);setTimeout(()=>c.remove(),3400);setTimeout(()=>{beep(520,.08,'square',.04);setTimeout(()=>beep(440,.12,'square',.04),140)},500)}}
+  toast(reason||'客人氣走了…');
+  const snapshot={...cust};
+  syncTray();
+  renderAll();
+  playWalkOut(snapshot, ()=>{
+    if(!G) return;
+    G.guests=G.guests.filter(g=>g.custId!==cust.custId);
+    syncTray();
+    renderAll();
+  });
+}
+function tick(){
+  if(!G||!G.run) return;
+  G.time-=0.1;
+  if(G.time<=0){G.time=0;renderHud();endGame(false);return}
+  renderHud();
+  let needCust=false;
+  const now=performance.now();
+  G.guests.forEach(g=>{
+    if(g.status!=='waiting'||!g.waitT0) return;
+    // if food already cooking for them, less angry — still count wait but slower complain
+    const cookingFor=G.chefs.some(c=>c.cooking&&c.cooking.guestId===g.custId);
+    const plateReady=G.plates.some(p=>p.dishId===g.dishId);
+    const waited=now-g.waitT0;
+    const madMs=cookingFor||plateReady ? WAIT_MAD_MS*1.35 : WAIT_MAD_MS;
+    const angryMs=cookingFor||plateReady ? WAIT_ANGRY_MS*1.35 : WAIT_ANGRY_MS;
+    const leaveMs=cookingFor||plateReady ? WAIT_LEAVE_MS*1.4 : WAIT_LEAVE_MS;
+    let lvl=0;
+    if(waited>=angryMs) lvl=2;
+    else if(waited>=madMs) lvl=1;
+    if(lvl!==(g.madLevel||0)){ g.madLevel=lvl; needCust=true; if(lvl===1) toast('有客人在催單！',700); if(lvl===2) toast('客人快生氣了！',700); }
+    if(waited>=leaveMs){
+      // leave angry — schedule via flag so we don't mutate mid-forEach oddly
+      g._storm=true;
+    }
+  });
+  const stormers=G.guests.filter(g=>g._storm);
+  stormers.forEach(g=>{ g._storm=false; guestStormOut(g.custId,'等太久，客人氣走了！'); });
+  if(needCust && !stormers.length) renderCusts();
+}
+function startGame(){
+  try{if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}catch(e){}
+  clearSel();
+  $('walkLayer').innerHTML='';
+  G=buildRound();
+  try{music.stop();music.step=0;music.start();}catch(e){}
+  {const b=$('musicBtn');if(b)b.textContent=music.on?'🔊':'🔇'}
+  show('s-play');
+  spawnGuest();
+  renderAll();
+  clearInterval(timer); clearInterval(spawnTimer);
+  timer=setInterval(tick,100);
+  spawnTimer=setInterval(()=>{
+    if(!G||!G.run) return;
+    if(canSpawn()){ spawnGuest(); }
+  }, SPAWN_MS);
+}
+function endGame(win){
+  if(!G) return;
+  if(!G.run && !win) return;
+  G.run=false; music.stop(); clearInterval(timer); clearInterval(spawnTimer); clearSel(); hideGhost();
+  const prevBest=hiGet();
+  hiSet(G.score);
+  if(win) sfx.win(); else sfx.lose();
+  const stars=G.served>=12?'★★★':G.served>=8?'★★☆':G.served>=4?'★☆☆':'☆☆☆';
+  toast(win?'打烊！結算中…':'時間到！結算中…',1200);
+  const score=G.score, served=G.served, lost=G.lost||0;
+  setTimeout(()=>{
+    $('endTitle').textContent='打烊囉！';
+    $('endStars').textContent=stars;
+    $('endBest').textContent='最高分：'+hiGet();
+    $('endServed').textContent='共服務 '+served+' 位客人';
+    $('endLost').textContent=lost?('氣走 '+lost+' 位客人'):'沒有客人被氣走 👍';
+    $('endNew').style.display='none';
+    $('endScore').textContent='0 分';
+    show('s-end'); refreshHi();
+    const t0=performance.now(), dur=1100;
+    (function tick(now){
+      const k=Math.min(1,(now-t0)/dur);
+      $('endScore').textContent=Math.round(score*k)+' 分';
+      if(k<1){ if(Math.random()<.35) beep(600+k*600,.03,'square',.03); requestAnimationFrame(tick); }
+      else if(score>prevBest && score>0){ $('endNew').style.display='inline-block'; sfx.win(); }
+    })(t0);
+  },900);
+}
+function clearSel(){sel=null;clearHi();document.querySelectorAll('.sticker.sel,.plate-slot.sel').forEach(e=>e.classList.remove('sel'))}
+
+function pt(e){
+  if(e.touches&&e.touches[0]) return {x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches[0]) return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return {x:e.clientX,y:e.clientY};
+}
+function hideGhost(){$('ghost').style.display='none'}
+function showGhost(kind,dishId,x,y){
+  const d=dishById(dishId), g=$('ghost');
+  g.querySelector('.em').textContent=d.e;
+  g.querySelector('.sn').textContent=kind==='plate'?('盤·'+d.n):d.n;
+  g.querySelector('.box').style.background=kind==='plate'?d.color:'#fffef0';
+  g.querySelector('.box').style.color=kind==='plate'?'#fff':'#1a1a1a';
+  g.style.display='block'; g.style.left=x+'px'; g.style.top=y+'px';
+}
+function moveGhost(x,y){const g=$('ghost');g.style.left=x+'px';g.style.top=y+'px'}
+function elAt(x,y){return document.elementFromPoint(x,y)}
+
+function onDown(e){
+  if(!G||!G.run) return;
+  const t=e.target.closest('[data-sticker],[data-plate-drag]');
+  if(!t) return;
+  const p=pt(e);
+  if(t.hasAttribute('data-sticker')){
+    const id=t.getAttribute('data-sticker');
+    const st=G.stickers.find(s=>s.id===id);
+    if(!st||st.used) return;
+    drag={kind:'sticker',id,dishId:st.dishId,el:t,x0:p.x,y0:p.y,moved:false};
+  }else{
+    const id=t.getAttribute('data-plate-drag');
+    const pl=G.plates.find(p=>p.id===id);
+    if(!pl) return;
+    drag={kind:'plate',id,dishId:pl.dishId,el:t,x0:p.x,y0:p.y,moved:false};
+    shoutMine(pl.dishId);
+  }
+}
+function onMove(e){
+  if(!drag) return;
+  const p=pt(e);
+  if(!drag.moved && Math.hypot(p.x-drag.x0,p.y-drag.y0)<10) return;
+  if(!drag.moved){drag.moved=true;drag.el.classList.add('dragging');showGhost(drag.kind,drag.dishId,p.x,p.y);clearSel();e.preventDefault()}
+  moveGhost(p.x,p.y); clearHi();
+  const under=elAt(p.x,p.y);
+  if(drag.kind==='sticker'){
+    const wok=under&&under.closest('[data-wok]');
+    if(wok){const c=chefById(wok.getAttribute('data-wok')); if(c&&!c.cooking) wok.classList.add('drop-hi')}
+  }else{
+    const cust=under&&under.closest('[data-cust]');
+    if(cust) cust.classList.add('drop-hi');
+  }
+  e.preventDefault();
+}
+function onUp(e){
+  if(!drag) return;
+  const p=pt(e), was=drag.moved, info=drag;
+  drag=null; hideGhost();
+  document.querySelectorAll('.dragging').forEach(el=>el.classList.remove('dragging'));
+  clearHi();
+  if(!was){handleTapSelect(info);return}
+  const under=elAt(p.x,p.y);
+  if(info.kind==='sticker'){
+    const wok=under&&under.closest('[data-wok]');
+    if(wok) startCook(info.id, wok.getAttribute('data-wok'));
+    else sfx.bad();
+  }else{
+    const cust=under&&under.closest('[data-cust]');
+    if(cust) deliverPlate(info.id, cust.getAttribute('data-cust'));
+    else sfx.bad();
+  }
+}
+setInterval(()=>{
+  if(!G||!G.run) return;
+  const now=performance.now();
+  if(G.chefSay&&now<G.chefSay.until) return;
+  if(G.plates.length>=4) return;
+  const old=G.stickers.some(s=>!s.used&&s.t0&&now-s.t0>4000);
+  if(!old) return;
+  const free=G.chefs.filter(c=>!c.cooking);
+  if(!free.length) return;
+  const c=free[Math.floor(Math.random()*free.length)];
+  const L=['材料呢？','材料咧？快給我！','鍋都熱了，材料呢？','還沒撿好料嗎？'];
+  chefSay(c.id,L[Math.floor(Math.random()*L.length)],1600);
+},3000);
+setInterval(()=>{
+  if(!G||!G.run) return;
+  const e0=$('serveSay');
+  if(G.plates.length>=4){ if(e0){e0.textContent='快來上菜！';e0.classList.add('show','big');clearTimeout(e0._t);e0._t=setTimeout(()=>e0.classList.remove('show','big'),1400);} return; }
+  if(e0) e0.classList.remove('big');
+},1500);
+setInterval(()=>{
+  if(!G||!G.run||G.plates.length) return;
+  if(!G.guests.some(g=>g.status==='waiting')) return;
+  const e=$('serveSay'); if(!e||e.classList.contains('show')) return;
+  const L=['怎麼還沒煮好？','菜好了沒？','客人在等了啦！'];
+  e.textContent=L[Math.floor(Math.random()*L.length)]; e.classList.add('show');
+  clearTimeout(e._t); e._t=setTimeout(()=>e.classList.remove('show'),1500);
+},4500);
+const CHATS=['好香喔！','好期待喔～','聞起來好讚','肚子好餓','這家好有名','等等要吃飽飽','好想吃喔'];
+setInterval(()=>{
+  if(!G||!G.run) return;
+  const cand=G.guests.filter(g=>g.status==='waiting'&&!(g.madLevel>0));
+  if(!cand.length) return;
+  const g=cand[Math.floor(Math.random()*cand.length)];
+  G.chat={id:g.custId,text:CHATS[Math.floor(Math.random()*CHATS.length)],until:performance.now()+1600};
+  renderAll();
+  setTimeout(()=>{if(G&&G.run)renderAll()},1650);
+},2600);
+function shoutMine(dishId){
+  if(!G) return; G.mineDish=dishId; G.mineUntil=performance.now()+1200; renderAll();
+  setTimeout(()=>{if(G&&G.mineUntil<=performance.now()+20)renderAll()},1250);
+}
+function handleTapSelect(info){
+  if(sel&&sel.kind===info.kind&&sel.id===info.id){clearSel();return}
+  clearSel();
+  sel={kind:info.kind,id:info.id,dishId:info.dishId};
+  sfx.tap();
+  if(info.kind==='sticker'){
+    const el=document.querySelector(`[data-sticker="${info.id}"]`);
+    if(el) el.classList.add('sel');
+    document.querySelectorAll('[data-wok]').forEach(w=>{
+      const c=chefById(w.getAttribute('data-wok'));
+      if(c&&!c.cooking) w.classList.add('tap-hi');
+    });
+    toast('再點空閒鍋',800);
+  }else{
+    const slot=document.querySelector(`[data-plate="${info.id}"]`);
+    if(slot) slot.classList.add('sel');
+    document.querySelectorAll('.cust.waiting').forEach(c=>{
+      if(c.getAttribute('data-dish')===info.dishId) c.classList.add('tap-hi');
+    });
+    shoutMine(info.dishId);
+    toast('再點客人送菜',800);
+  }
+}
+function onTapTarget(e){
+  if(!G||!G.run||!sel) return;
+  if(sel.kind==='sticker'){
+    const wok=e.target.closest('[data-wok]');
+    if(wok){const id=sel.id, cid=wok.getAttribute('data-wok'); clearSel(); startCook(id,cid); e.stopPropagation()}
+  }else if(sel.kind==='plate'){
+    const cust=e.target.closest('[data-cust]');
+    if(cust){const id=sel.id, cid=cust.getAttribute('data-cust'); clearSel(); deliverPlate(id,cid); e.stopPropagation()}
+  }
+}
+
+const play=$('s-play');
+play.addEventListener('pointerdown', onDown);
+window.addEventListener('pointermove', onMove, {passive:false});
+window.addEventListener('pointerup', onUp);
+window.addEventListener('pointercancel', ()=>{drag=null;hideGhost()});
+play.addEventListener('touchstart', onDown, {passive:true});
+window.addEventListener('touchmove', onMove, {passive:false});
+window.addEventListener('touchend', onUp);
+play.addEventListener('click', onTapTarget);
+
+$('btnStart').onclick=()=>{sfx.tap();startGame()};
+$('btnAgain').onclick=()=>{sfx.tap();startGame()};
+$('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
+
+window.__BBB={
+  start:startGame, end:(w)=>endGame(!!w), get:()=>G,
+  startCook, finishCook, deliverPlate, spawnGuest, canSpawn, syncTray,
+  GOAL, MAX_GUESTS, ROUND, COOK_MS, EAT_MS, SPAWN_MS, WALK_IN_MS, dishes:DISHES,
+  seatedGuests:()=>G?seatedGuests():[], freeSeatIndex:()=>G?freeSeatIndex():-1
+};
+refreshHi();
+})();
+</script>
+</body>
+</html>
