@@ -1211,7 +1211,7 @@ function handleTapSelect(info){
       const c=chefById(w.getAttribute('data-wok'));
       if(c&&!c.cooking) w.classList.add('tap-hi');
     });
-    
+    toast(Math.random()<.5?'炒快一點！':'🎵 夢的翅膀已經受了傷～',1400);
   }else{
     const slot=document.querySelector(`[data-plate="${info.id}"]`);
     if(slot) slot.classList.add('sel');
