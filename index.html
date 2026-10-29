@@ -420,7 +420,7 @@ h1{font-size:clamp(16px,4.5vw,22px);color:#fff;text-align:center;line-height:1.3
         <div class="serve-sprite">
           <div class="px-chef look1 busywalk"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div><div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i class="L"></i><i class="R"></i></div></div>
         </div>
-        <div class="serve-tag">出菜</div>
+        <div class="serve-tag">阿傑</div>
         <div class="prep-say" id="serveSay"></div>
       </div>
       <div class="plate-row" id="plates"></div>
@@ -537,7 +537,7 @@ const music={on:(()=>{try{return localStorage.getItem('bbb_music')!=='0'}catch(e
 };
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on')}
-function toast(t,ms){const e=$(/端|送|盤|惠顧|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
+function toast(t,ms){const e=$(/端|送|盤|惠顧|哇災|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
 function hiGet(){try{return +(localStorage.getItem(LS)||0)}catch(e){return window.__hi||0}}
 function hiSet(n){if(n>hiGet()){window.__hi=n;try{localStorage.setItem(LS,String(n))}catch(e){}}}
 function refreshHi(){$('hiScore').textContent='最高分：'+hiGet()}
@@ -1247,6 +1247,7 @@ $('btnStart').onclick=()=>{sfx.tap();startGame()};
 $('btnAgain').onclick=()=>{sfx.tap();startGame()};
 $('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
 
+setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.3)toast('哇災！',1100)},6000);
 window.__BBB={
   start:startGame, end:(w)=>endGame(!!w), get:()=>G,
   startCook, finishCook, deliverPlate, spawnGuest, canSpawn, syncTray,
