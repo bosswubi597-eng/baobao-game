@@ -9,6 +9,7 @@
 html,body{height:100%;height:100dvh;overflow:hidden;font-family:"Courier New",Courier,monospace;background:#0d0d0d;color:#2b1a0e;touch-action:none}
 #app{max-width:480px;margin:0 auto;height:100%;height:100dvh;display:flex;flex-direction:column;background:#1a1a1a;position:relative;overflow:hidden;border:4px solid #111}
 .screen{display:none;flex-direction:column;height:100%;padding:8px;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+html.ios-tab #app{padding-bottom:64px}
 .screen.on{display:flex}
 h1{font-size:clamp(16px,4.5vw,22px);color:#fff;text-align:center;line-height:1.35;margin:6px 0;text-shadow:3px 3px 0 #8b0000,-1px 0 #000,1px 0 #000,0 1px #000;letter-spacing:1px}
 .sub{text-align:center;font-size:14px;color:#1a1a1a;margin-bottom:6px;line-height:1.45;font-weight:700}
@@ -1260,5 +1261,5 @@ window.__BBB={
 refreshHi();
 })();
 </script>
-</body>
+<script>(function(){var ua=navigator.userAgent;if(/iPhone|iPod/.test(ua)&&!navigator.standalone&&!matchMedia("(display-mode: standalone)").matches)document.documentElement.classList.add("ios-tab");function fit(){var h=(window.visualViewport?visualViewport.height:innerHeight);var a=document.getElementById("app");if(a)a.style.height=h+"px"}fit();addEventListener("resize",fit);window.visualViewport&&visualViewport.addEventListener("resize",fit)})()</script></body>
 </html>
