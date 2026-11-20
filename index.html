@@ -385,6 +385,66 @@ html.ios-tab .shop-vsign{font-size:18px;letter-spacing:1px;width:32px;padding:4p
 @keyframes endPop{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
 @keyframes newRec{50%{transform:scale(1.08)}}
 #endScore{font-size:34px!important}
+
+/* ===== test v1: difficulty + social (start/end only) ===== */
+#s-start .center{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:10px 8px 16px;gap:7px}
+#s-end .center{touch-action:pan-y}
+#s-start a,#s-end a,.diff-btn{touch-action:manipulation}
+#s-start .logo{height:48px!important}
+#s-start .steps{font-size:13px;line-height:1.45;padding:6px 8px;max-width:300px}
+.test-badge{position:absolute;top:6px;left:50%;transform:translateX(-50%);z-index:4;background:#f1c40f;color:#1a1a1a;border:3px solid #1a1a1a;font-size:11px;font-weight:900;padding:1px 8px;box-shadow:2px 2px 0 #1a1a1a;white-space:nowrap}
+.diff-wrap{width:100%;max-width:300px;text-align:center;flex-shrink:0}
+.diff-lbl{font-size:13px;font-weight:900;color:#1a1a1a;background:#fffef5;display:inline-block;border:3px solid #1a1a1a;padding:1px 8px;box-shadow:2px 2px 0 #1a1a1a}
+.diff-row{display:flex;gap:6px;width:100%;margin-top:6px}
+.diff-btn{flex:1;border:3px solid #1a1a1a;background:#fff;color:#1a1a1a;font-family:inherit;font-weight:900;font-size:16px;padding:10px 2px;box-shadow:3px 3px 0 #1a1a1a;cursor:pointer;min-height:44px;border-radius:0}
+.diff-btn.on{background:#e74c3c;color:#fff}
+.diff-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1a1a1a}
+.diff-hint{margin-top:4px;font-size:12px;font-weight:800;color:#1a1a1a;text-shadow:0 0 4px #fff,0 0 6px #fff}
+.link-row{display:flex;gap:6px;width:100%;max-width:300px;flex-shrink:0}
+.soc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-decoration:none;color:#1a1a1a;background:#fff;border:3px solid #1a1a1a;box-shadow:3px 3px 0 #1a1a1a;padding:7px 2px 5px;font-size:11px;font-weight:900;min-height:44px;line-height:1.1}
+.soc svg{width:22px;height:22px;display:block}
+.soc:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1a1a1a}
+.tel-link{font-size:15px;font-weight:900;color:#1a1a1a;text-decoration:none;background:#fffef5;border:3px solid #1a1a1a;padding:7px 10px;box-shadow:3px 3px 0 #1a1a1a}
+#s-end .link-row{margin-top:8px;max-width:100%}
+#s-start .btn.big,#s-start #startOrder{max-width:300px}
+@media (max-height:700px){
+  #s-start .logo{display:none!important}
+  #s-start .px-banner{padding:5px 8px}
+  #s-start .px-banner h1{font-size:22px!important}
+  #s-start .steps{font-size:12px;line-height:1.4;padding:5px 7px}
+  #s-start .center{gap:5px;padding:26px 8px 10px}
+  #s-start .btn.big{font-size:18px;padding:10px 16px}
+  #s-start #startOrder{font-size:17px!important;padding:10px 16px!important}
+  #s-start .tel-link{padding:5px 10px;font-size:14px}
+  #s-start .diff-btn{min-height:40px;padding:8px 2px;font-size:15px}
+  #s-start .diff-hint{font-size:11px}
+  #s-start .hi{font-size:14px;padding:3px 7px}
+  #s-start .soc{padding:6px 2px 4px}
+}
+
+/* ===== test v2: real dish photos ===== */
+.dish-art{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;border:2px solid #1a1a1a;box-shadow:1px 1px 0 rgba(0,0,0,.28);background:#f5f0e6;flex-shrink:0;pointer-events:none;vertical-align:middle;box-sizing:border-box}
+.dish-art img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;image-rendering:auto;image-rendering:high-quality;-webkit-user-drag:none}
+.dish-art img.fail{display:none}
+.dish-fallback{display:none;line-height:1}
+.dish-art.no-img .dish-fallback,.dish-art.has-fail .dish-fallback{display:block}
+.dish-art.sm{width:20px;height:20px}
+.dish-art.md{width:28px;height:28px}
+.dish-art.lg{width:40px;height:40px}
+.dish-art.sm .dish-fallback{font-size:12px}
+.dish-art.md .dish-fallback{font-size:16px}
+.dish-art.lg .dish-fallback{font-size:22px}
+.sticker .dish-art,#ghost .dish-art{width:32px;height:32px;margin:0 auto}
+.plate-slot .ph .food{padding:0;overflow:hidden}
+.plate-slot .ph .food .dish-art{width:36px;height:36px}
+html.ios-tab .plate-slot .ph .food .dish-art{width:28px;height:28px}
+.wok-in{display:flex;align-items:center;justify-content:center}
+.wok-in .dish-art{width:26px;height:26px;border-color:#111}
+.seat-slot .bubble .want{display:flex;justify-content:center;margin:0 0 1px;line-height:0}
+.seat-slot .want .dish-art{width:22px;height:22px}
+.seat-slot .food-on{display:flex;justify-content:center;align-items:center}
+.seat-slot .food-on .dish-art{width:22px;height:22px;border-width:2px}
+
 </style>
 </head>
 <body>
@@ -403,9 +463,33 @@ html.ios-tab .shop-vsign{font-size:18px;letter-spacing:1px;width:32px;padding:4p
         ③ 拖貼圖給空閒廚師炒，再端盤給客人<br>
         ④ 60 秒內服務越多客人越高分！
       </div>
-      <p class="hi" id="hiScore">最高分：0</p>
+      <div class="diff-wrap" role="radiogroup" aria-label="選擇難度">
+        <div class="diff-lbl">選擇難度</div>
+        <div class="diff-row">
+          <button type="button" class="diff-btn on" data-diff="weekday" aria-pressed="true">平日</button>
+          <button type="button" class="diff-btn" data-diff="weekend" aria-pressed="false">週末</button>
+          <button type="button" class="diff-btn" data-diff="peak" aria-pressed="false">尖峰</button>
+        </div>
+        <div class="diff-hint" id="diffHint">客人來得稍慢，比較有耐心</div>
+      </div>
+      <p class="hi" id="hiScore">最高分（平日）：0</p>
       <button class="btn big" id="btnStart">開始營業</button>
-      <a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" id="startOrder" style="display:block;box-sizing:border-box;width:100%;max-width:300px;text-align:center;margin-top:6px;background:#fff;color:#c0392b;border:4px solid #1a1a1a;padding:14px 20px;font-size:20px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a>
+      <a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" id="startOrder" style="display:block;box-sizing:border-box;width:100%;max-width:300px;text-align:center;margin-top:2px;background:#fff;color:#c0392b;border:4px solid #1a1a1a;padding:14px 20px;font-size:20px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a>
+      <a class="tel-link" href="tel:0228313481">📞 02-2831-3481</a>
+      <div class="link-row" id="startLinks">
+        <a class="soc" href="https://www.facebook.com/share/1ESXmP2f16/" target="_blank" rel="noopener" aria-label="Facebook 臉書">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#1877f2" stroke="#1a1a1a" stroke-width="1.8"/><path d="M14.5 8.2h-1.3c-.5 0-.7.2-.7.7v1.3H14.5l-.2 2.1h-1.8V18h-2.3v-5.7H8.5v-2.1h1.7V8.7c0-1.7 1-2.7 2.7-2.7.7 0 1.4.1 1.6.1v2.1z" fill="#fff"/></svg><span>臉書</span>
+        </a>
+        <a class="soc" href="https://www.instagram.com/baobaobaoshilin" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#e1306c" stroke="#1a1a1a" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg><span>IG</span>
+        </a>
+        <a class="soc" href="https://www.threads.com/@baobaobaoshilin" target="_blank" rel="noopener" aria-label="Threads">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8"/><path d="M9.2 12.2c.2-2.4 1.6-3.7 3.6-3.8 2.2-.1 3.6 1.1 3.7 3.2.1 1.7-.5 3-1.6 3.8-1 .7-2.1.9-3.2.5 1.2 1.6 3.5 1.6 4.6.6l1.2 1.4c-1.9 1.8-5.3 1.8-7.1-.8-1.3-1.8-1.4-4.6-.2-6.5 1.2-1.8 3.3-2.6 5.3-2.2 2 .3 3.5 1.8 3.6 4 .1 2.4-1.1 4.3-3.2 5.1-2.1.8-4.2.2-5.3-1.6-.3-.5-.2-1 .3-1.3.5-.3 1-.2 1.3.3.6 1 1.7 1.3 2.8.8 1.2-.5 1.8-1.6 1.7-3.1 0-1.3-.8-2.2-2-2.3-1.2 0-2 .7-2.1 2.2-.1.8.1 1.4.6 1.7.5.3.7.9.4 1.3-.3.5-.9.7-1.5.4-1-.5-1.5-1.7-1.3-3.1z" fill="#fff"/></svg><span>Threads</span>
+        </a>
+        <a class="soc" href="https://www.google.com/maps/search/?api=1&query=寶飽煲小館+台北市士林區福壽街3號" target="_blank" rel="noopener" aria-label="Google 地圖">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#34a853" stroke="#1a1a1a" stroke-width="1.8"/><path d="M12 18s-5-4.2-5-7.2A5 5 0 0 1 12 6a5 5 0 0 1 5 4.8C17 13.8 12 18 12 18z" fill="#fff" stroke="#1a1a1a" stroke-width="1"/><circle cx="12" cy="10.6" r="1.6" fill="#34a853"/></svg><span>地圖</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -462,11 +546,26 @@ html.ios-tab .shop-vsign{font-size:18px;letter-spacing:1px;width:32px;padding:4p
 
   <div id="s-end" class="screen">
     <div class="center">
-      <div class="cta cta-top"><div style="font-size:22px;font-weight:900;color:#c0392b;letter-spacing:1px">來寶飽煲小館吃真的！</div>台北市士林區福壽街3號<br>📞 <a href="tel:0228313481" style="color:inherit;font-weight:900">02-2831-3481</a><br><a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;background:#e74c3c;color:#fff;border:3px solid #1a1a1a;padding:6px 14px;font-size:17px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a></div>
+      <div class="cta cta-top"><div style="font-size:22px;font-weight:900;color:#c0392b;letter-spacing:1px">來寶飽煲吃飯吧！</div>台北市士林區福壽街3號<br>📞 <a href="tel:0228313481" style="color:inherit;font-weight:900">02-2831-3481</a><br><a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;background:#e74c3c;color:#fff;border:3px solid #1a1a1a;padding:6px 14px;font-size:17px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a>
+        <div class="link-row" id="endLinks">
+        <a class="soc" href="https://www.facebook.com/share/1ESXmP2f16/" target="_blank" rel="noopener" aria-label="Facebook 臉書">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#1877f2" stroke="#1a1a1a" stroke-width="1.8"/><path d="M14.5 8.2h-1.3c-.5 0-.7.2-.7.7v1.3H14.5l-.2 2.1h-1.8V18h-2.3v-5.7H8.5v-2.1h1.7V8.7c0-1.7 1-2.7 2.7-2.7.7 0 1.4.1 1.6.1v2.1z" fill="#fff"/></svg><span>臉書</span>
+        </a>
+        <a class="soc" href="https://www.instagram.com/baobaobaoshilin" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#e1306c" stroke="#1a1a1a" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg><span>IG</span>
+        </a>
+        <a class="soc" href="https://www.threads.com/@baobaobaoshilin" target="_blank" rel="noopener" aria-label="Threads">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="1.8"/><path d="M9.2 12.2c.2-2.4 1.6-3.7 3.6-3.8 2.2-.1 3.6 1.1 3.7 3.2.1 1.7-.5 3-1.6 3.8-1 .7-2.1.9-3.2.5 1.2 1.6 3.5 1.6 4.6.6l1.2 1.4c-1.9 1.8-5.3 1.8-7.1-.8-1.3-1.8-1.4-4.6-.2-6.5 1.2-1.8 3.3-2.6 5.3-2.2 2 .3 3.5 1.8 3.6 4 .1 2.4-1.1 4.3-3.2 5.1-2.1.8-4.2.2-5.3-1.6-.3-.5-.2-1 .3-1.3.5-.3 1-.2 1.3.3.6 1 1.7 1.3 2.8.8 1.2-.5 1.8-1.6 1.7-3.1 0-1.3-.8-2.2-2-2.3-1.2 0-2 .7-2.1 2.2-.1.8.1 1.4.6 1.7.5.3.7.9.4 1.3-.3.5-.9.7-1.5.4-1-.5-1.5-1.7-1.3-3.1z" fill="#fff"/></svg><span>Threads</span>
+        </a>
+        <a class="soc" href="https://www.google.com/maps/search/?api=1&query=寶飽煲小館+台北市士林區福壽街3號" target="_blank" rel="noopener" aria-label="Google 地圖">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#34a853" stroke="#1a1a1a" stroke-width="1.8"/><path d="M12 18s-5-4.2-5-7.2A5 5 0 0 1 12 6a5 5 0 0 1 5 4.8C17 13.8 12 18 12 18z" fill="#fff" stroke="#1a1a1a" stroke-width="1"/><circle cx="12" cy="10.6" r="1.6" fill="#34a853"/></svg><span>地圖</span>
+        </a>
+      </div></div>
       <h1 id="endTitle">打烊了！</h1>
       <div class="stars" id="endStars">★★★</div>
       <p style="font-size:22px;font-weight:900;background:#fff;border:4px solid #1a1a1a;padding:6px 12px;box-shadow:3px 3px 0 #1a1a1a" id="endScore">0 分</p>
-      <p class="hi" id="endBest">最高分：0</p>
+      <p class="hi" id="endDiff">難度：平日</p>
+      <p class="hi" id="endBest">最高分（平日）：0</p>
       <p class="hi" id="endServed">共服務 0 位客人</p>
       <p class="hi" id="endLost"></p>
       <div id="endNew" style="display:none;font-size:20px;font-weight:900;color:#fff;background:#e74c3c;border:3px solid #1a1a1a;padding:4px 10px;box-shadow:3px 3px 0 #1a1a1a;animation:newRec .5s steps(2) infinite">🏆 新紀錄！</div>
@@ -493,17 +592,36 @@ function chefPuppet(look, frying){
   return `<div class="px-chef look${L}${frying?' fry':' idle'}" aria-hidden="true"><div class="ch-shadow"></div><div class="ch-hat"></div><div class="ch-head"></div>${sweat}<div class="ch-body"><div class="ch-apron"></div><div class="ch-arm L"></div><div class="ch-arm R"><span class="ch-tool"></span></div></div><div class="ch-legs"><i></i><i></i></div></div>`;
 }
 const DISHES=[
-  {id:'ribs',n:'蜜汁排骨',e:'🍖', color:'#c0392b'},
-  {id:'kungpao',n:'宮保雞丁',e:'🌶️', color:'#e67e22'},
-  {id:'beef',n:'紅燒牛腩',e:'🥩', color:'#922b21'},
-  {id:'noodle',n:'什錦湯麵',e:'🍜', color:'#d4a017'},
-  {id:'shrimp',n:'蝦仁炒飯',e:'🦐', color:'#f39c12'}
+  {id:'ribs',n:'蜜汁排骨',e:'🍖', color:'#c0392b', img:'img/ribs.webp'},
+  {id:'kungpao',n:'宮保雞丁',e:'🌶️', color:'#e67e22', img:'img/kungpao.webp'},
+  {id:'beef',n:'紅燒牛腩',e:'🥩', color:'#922b21', img:'img/beef.webp'},
+  {id:'noodle',n:'什錦湯麵',e:'🍜', color:'#d4a017', img:'img/noodle.webp'},
+  {id:'shrimp',n:'蝦仁炒飯',e:'🦐', color:'#f39c12', img:'img/shrimp.webp'}
 ];
 const GOAL=12, MAX_GUESTS=6, ROUND=60, COOK_MS=2800, EAT_MS=2600, SPAWN_MS=900, WALK_IN_MS=850, WALK_OUT_MS=700, WAIT_MAD_MS=9000, WAIT_ANGRY_MS=16000, WAIT_LEAVE_MS=22000;
 const LS='bbb_match_v5_hi';
+const DIFFS={
+  weekday:{id:'weekday',name:'平日',hint:'客人來得稍慢，比較有耐心',spawnMs:1100,waitMadMs:11000,waitAngryMs:19000,waitLeaveMs:26000,hiKey:LS},
+  weekend:{id:'weekend',name:'週末',hint:'客人流量跟現在正式版差不多',spawnMs:900,waitMadMs:9000,waitAngryMs:16000,waitLeaveMs:22000,hiKey:'bbb_match_v5_hi_weekend'},
+  peak:{id:'peak',name:'尖峰',hint:'客人來得快，耐心比較短',spawnMs:650,waitMadMs:6500,waitAngryMs:11000,waitLeaveMs:15000,hiKey:'bbb_match_v5_hi_peak'}
+};
 const $=id=>document.getElementById(id);
 let G=null, timer=null, spawnTimer=null, audioCtx=null;
 let drag=null, sel=null;
+let currentDiffId='weekday';
+const __hiMem={};
+function currentDiff(){return DIFFS[currentDiffId]||DIFFS.weekday}
+function setDiff(id){
+  if(!DIFFS[id]) return;
+  currentDiffId=id;
+  document.querySelectorAll('.diff-btn').forEach(b=>{
+    const on=b.getAttribute('data-diff')===id;
+    b.classList.toggle('on',on);
+    b.setAttribute('aria-pressed',on?'true':'false');
+  });
+  const h=$('diffHint'); if(h) h.textContent=currentDiff().hint;
+  refreshHi();
+}
 
 function gullAlarm(){const now=Date.now();if(window._gullT&&now-window._gullT<6000)return;window._gullT=now;const s=document.querySelector('.shop-sky');if(!s)return;const c=document.createElement('div');c.className='gull';const t=['🚨 快出菜！','🚨 客人要走了！','🚨 緊急！'][Math.floor(Math.random()*3)];c.innerHTML='<span class="caw">嘎嘎！</span><svg width="40" height="22" viewBox="0 0 40 22"><g class="wu"><path d="M17 12 L5 1 L12 3 L20 10 Z M23 12 L35 1 L28 3 L20 10 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><g class="wd"><path d="M17 12 L4 20 L11 19 L20 14 Z M23 12 L36 20 L29 19 L20 14 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><ellipse cx="20" cy="12" rx="8" ry="4.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="28" cy="10" r="3.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="29" cy="9.5" r="0.9" fill="#111"/><path d="M31 10.5 L36 12 L31 12.5 Z" fill="#f39c12" stroke="#1a1a1a" stroke-width=".8"/></svg><div class="sign">'+t+'</div>';s.appendChild(c);setTimeout(()=>c.remove(),4800);[0,260,620,880].forEach((d,i)=>setTimeout(()=>{beep(i%2?1050:1400,.16,'sawtooth',.06);setTimeout(()=>beep(i%2?750:950,.12,'sawtooth',.05),90)},d))}
 function beep(f,d,type,v){
@@ -556,10 +674,16 @@ const music={on:(()=>{try{return localStorage.getItem('bbb_music')!=='0'}catch(e
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on')}
 function toast(t,ms){const e=$(/端|送|盤|惠顧|哇災|雅馬哈|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
-function hiGet(){try{return +(localStorage.getItem(LS)||0)}catch(e){return window.__hi||0}}
-function hiSet(n){if(n>hiGet()){window.__hi=n;try{localStorage.setItem(LS,String(n))}catch(e){}}}
-function refreshHi(){$('hiScore').textContent='最高分：'+hiGet()}
+function hiGet(diff){const d=diff||currentDiff();try{return +(localStorage.getItem(d.hiKey)||0)}catch(e){return __hiMem[d.id]||0}}
+function hiSet(n,diff){const d=diff||currentDiff();if(n>hiGet(d)){__hiMem[d.id]=n;try{localStorage.setItem(d.hiKey,String(n))}catch(e){}}}
+function refreshHi(){const d=currentDiff();const el=$('hiScore');if(el)el.textContent='最高分（'+d.name+'）：'+hiGet(d)}
 function dishById(id){return DISHES.find(d=>d.id===id)}
+function dishArt(d,size){
+  const sz=size||'md';
+  const fb='<span class="dish-fallback" aria-hidden="true">'+((d&&d.e)||'')+'</span>';
+  if(d&&d.img) return '<span class="dish-art '+sz+'"><img src="'+d.img+'" alt="" draggable="false" onerror="this.classList.add(\'fail\');this.parentNode.classList.add(\'has-fail\')">'+fb+'</span>';
+  return '<span class="dish-art '+sz+' no-img">'+fb+'</span>';
+}
 
 function buildRound(){
   return {
@@ -795,7 +919,7 @@ function renderCusts(){
       const chat=(!mad&&G.chat&&G.chat.id===o.custId&&performance.now()<G.chat.until)?G.chat.text:'';
       const complain=mine?'<div class="g-say mine-say">我的！</div>':chat?'<div class="g-say chat-say">'+chat+'</div>':mad>=2?'<div class="g-say"><b class="gf">😡</b>'+['快點啦！','還不來？！','我要走了！'][(+o.custId.slice(1))%3]+'</div>':(mad>=1?'<div class="g-say"><b class="gf">😒</b>'+['好久喔…','怎麼還沒來','等好久'][(+o.custId.slice(1))%3]+'</div>':'');
       html+=`<div class="seat-slot cust waiting${madCls}" data-si="${i}" data-cust="${o.custId}" data-dish="${o.dishId}">
-        ${complain}<div class="bubble"><div class="want">${d.e}</div><div class="want-n">${d.n.slice(0,2)}<br>${d.n.slice(2)}</div></div>
+        ${complain}<div class="bubble"><div class="want">${dishArt(d,'sm')}</div><div class="want-n">${d.n.slice(0,2)}<br>${d.n.slice(2)}</div></div>
         <div class="puppet-zone">${guestPuppet(o.look,'sit')}</div>
         <div class="table"><div class="tb-plate"></div><i class="tl l1"></i><i class="tl l2"></i></div>
       </div>`;
@@ -807,7 +931,7 @@ function renderCusts(){
       html+=`<div class="seat-slot eating" data-si="${i}" data-cust="${o.custId}">
         <div class="puppet-zone">${guestPuppet(o.look,'sit')}</div>
         <div class="eat-bar"><div class="eat-fill" style="width:${startPct}%;animation:cookFill ${rem}ms linear forwards"></div></div>
-        <div class="table"><div class="tb-plate"></div><span class="food-on">${d.e}</span><i class="tl l1"></i><i class="tl l2"></i></div>
+        <div class="table"><div class="tb-plate"></div><span class="food-on">${dishArt(d,'sm')}</span><i class="tl l1"></i><i class="tl l2"></i></div>
       </div>`;
     }else{
       html+=`<div class="seat-slot empty" data-si="${i}">
@@ -834,7 +958,7 @@ function renderKitchen(){
       <div class="wok ${burnt?'burnt':busy?'cooking':'free'}${held?' held':''}" data-wok="${c.id}">${burnt?'<div class="smoke">💨💨</div>':''}
         <div class="steam">${busy&&!burnt?'💨💨':''}</div>
         <div class="sparks"></div>
-        <div class="wok-in">${busy?d.e:'<span style="opacity:.45;font-size:10px;font-weight:900">空閒</span>'}</div>
+        <div class="wok-in">${busy?dishArt(d,'md'):'<span style="opacity:.45;font-size:10px;font-weight:900">空閒</span>'}</div>
       </div>
       ${burnt?'':bar}
       <div class="fire-base${busy?' on':''}"></div>
@@ -860,7 +984,7 @@ function renderPlates(){
       const d=dishById(p.dishId);
       slots.push(`<div class="plate-slot" data-plate="${p.id}" data-slot="${i}">
         <div class="ph" data-plate-drag="${p.id}" data-dish="${p.dishId}">
-          <div class="food" style="background:${d.color}"><span class="big">${d.e}</span></div>
+          <div class="food" style="background:${d.color}">${dishArt(d,'lg')}</div>
         </div>
         <div class="pname">${d.n}</div>
       </div>`);
@@ -876,7 +1000,7 @@ function renderTray(){
   $('tray').innerHTML=unused.map(s=>{
     const d=dishById(s.dishId);
     return `<div class="sticker" data-sticker="${s.id}" data-dish="${s.dishId}">
-      <div class="em">${d.e}</div><div class="sn">${d.n}</div>
+      <div class="em">${dishArt(d,'md')}</div><div class="sn">${d.n}</div>
     </div>`;
   }).join('') || '<div style="font-size:14px;font-weight:800;color:#fff;padding:8px">等待客人走進店…</div>';
 }
@@ -1044,9 +1168,10 @@ function tick(){
     const cookingFor=G.chefs.some(c=>c.cooking&&c.cooking.guestId===g.custId);
     const plateReady=G.plates.some(p=>p.dishId===g.dishId);
     const waited=now-g.waitT0;
-    const madMs=cookingFor||plateReady ? WAIT_MAD_MS*1.35 : WAIT_MAD_MS;
-    const angryMs=cookingFor||plateReady ? WAIT_ANGRY_MS*1.35 : WAIT_ANGRY_MS;
-    const leaveMs=cookingFor||plateReady ? WAIT_LEAVE_MS*1.4 : WAIT_LEAVE_MS;
+    const D=currentDiff();
+    const madMs=cookingFor||plateReady ? D.waitMadMs*1.35 : D.waitMadMs;
+    const angryMs=cookingFor||plateReady ? D.waitAngryMs*1.35 : D.waitAngryMs;
+    const leaveMs=cookingFor||plateReady ? D.waitLeaveMs*1.4 : D.waitLeaveMs;
     let lvl=0;
     if(waited>=angryMs) lvl=2;
     else if(waited>=madMs) lvl=1;
@@ -1075,7 +1200,7 @@ function startGame(){
   spawnTimer=setInterval(()=>{
     if(!G||!G.run) return;
     if(canSpawn()){ spawnGuest(); }
-  }, SPAWN_MS);
+  }, currentDiff().spawnMs);
 }
 function endGame(win){
   if(!G) return;
@@ -1090,7 +1215,8 @@ function endGame(win){
   setTimeout(()=>{
     $('endTitle').textContent='打烊囉！';
     $('endStars').textContent=stars;
-    $('endBest').textContent='最高分：'+hiGet();
+    $('endDiff').textContent='難度：'+currentDiff().name;
+    $('endBest').textContent='最高分（'+currentDiff().name+'）：'+hiGet();
     $('endServed').textContent='共服務 '+served+' 位客人';
     $('endLost').textContent=lost?('氣走 '+lost+' 位客人'):'沒有客人被氣走 👍';
     $('endNew').style.display='none';
@@ -1115,7 +1241,7 @@ function pt(e){
 function hideGhost(){$('ghost').style.display='none'}
 function showGhost(kind,dishId,x,y){
   const d=dishById(dishId), g=$('ghost');
-  g.querySelector('.em').textContent=d.e;
+  g.querySelector('.em').innerHTML=dishArt(d,'md');
   g.querySelector('.sn').textContent=kind==='plate'?('盤·'+d.n):d.n;
   g.querySelector('.box').style.background=kind==='plate'?d.color:'#fffef0';
   g.querySelector('.box').style.color=kind==='plate'?'#fff':'#1a1a1a';
@@ -1264,6 +1390,9 @@ play.addEventListener('click', onTapTarget);
 $('btnStart').onclick=()=>{sfx.tap();startGame()};
 $('btnAgain').onclick=()=>{sfx.tap();startGame()};
 $('btnHome').onclick=()=>{sfx.tap();show('s-start');refreshHi()};
+document.querySelectorAll('.diff-btn').forEach(b=>{
+  b.onclick=()=>{sfx.tap();setDiff(b.getAttribute('data-diff'))};
+});
 
 setInterval(()=>{if(!G||!G.run)return;const e=$('serveSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.6)toast(Math.random()<.5?'哇災！':'嘿！雅馬哈！',1300)},3500);
 setInterval(()=>{if(!G||!G.run)return;const e=$('prepSay');if(!e||e.classList.contains('show'))return;if(Math.random()<.6)toast(Math.random()<.5?'🎵 夢的翅膀已經受了傷～':'🎵 嘟嘟嘟他好壞～',2200)},4000);
