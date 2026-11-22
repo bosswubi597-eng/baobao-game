@@ -422,6 +422,18 @@ html.ios-tab .shop-vsign{font-size:18px;letter-spacing:1px;width:32px;padding:4p
   #s-start .soc{padding:6px 2px 4px}
 }
 
+
+/* ===== test sfx: audio toggles ===== */
+.audio-row{display:flex;gap:8px;width:100%;max-width:300px;justify-content:center;flex-shrink:0}
+.audio-tog{flex:1;border:3px solid #1a1a1a;background:#fffef5;color:#1a1a1a;font-family:inherit;font-weight:900;font-size:13px;padding:6px 4px;box-shadow:2px 2px 0 #1a1a1a;cursor:pointer;min-height:36px;border-radius:0}
+.audio-tog.off{opacity:.6;background:#eee}
+.audio-tog:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1a1a1a}
+.hud .icon-pill{padding:3px 6px;min-width:28px;text-align:center;flex-shrink:0}
+@media (max-height:700px){
+  #s-start .audio-tog{min-height:32px;padding:4px 4px;font-size:12px}
+  .hud{font-size:13px;padding:5px 6px;gap:3px}
+  .hud .pill{padding:3px 6px}
+}
 /* ===== test v2: real dish photos ===== */
 .dish-art{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;border:2px solid #1a1a1a;box-shadow:1px 1px 0 rgba(0,0,0,.28);background:#f5f0e6;flex-shrink:0;pointer-events:none;vertical-align:middle;box-sizing:border-box}
 .dish-art img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%;image-rendering:auto;image-rendering:high-quality;-webkit-user-drag:none}
@@ -474,6 +486,10 @@ html.ios-tab .plate-slot .ph .food .dish-art{width:28px;height:28px}
         <div class="diff-hint" id="diffHint">客人來得稍慢，比較有耐心</div>
       </div>
       <p class="hi" id="hiScore">最高分（平日）：0</p>
+      <div class="audio-row" aria-label="聲音設定">
+        <button type="button" class="audio-tog" id="musicBtnStart" onclick="music.toggle()">🎵 音樂</button>
+        <button type="button" class="audio-tog" id="sfxBtnStart" data-sfx-btn onclick="sfx.toggle()">🔔 音效</button>
+      </div>
       <button class="btn big" id="btnStart">開始營業</button>
       <a href="https://shop.ichefpos.com/store/NK4Ynqxr/ordering" target="_blank" rel="noopener" id="startOrder" style="display:block;box-sizing:border-box;width:100%;max-width:300px;text-align:center;margin-top:2px;background:#fff;color:#c0392b;border:4px solid #1a1a1a;padding:14px 20px;font-size:20px;font-weight:900;text-decoration:none;box-shadow:3px 3px 0 #1a1a1a">🥡 線上點餐（iCHEF）</a>
       <a class="tel-link" href="tel:0228313481">📞 02-2831-3481</a>
@@ -499,7 +515,8 @@ html.ios-tab .plate-slot .ph .food .dish-art{width:28px;height:28px}
       <span class="pill" id="hudDone">服務 0 位</span>
       <span class="pill" id="hudScore">分數 0</span>
       <span class="pill" id="hudTime">⏱ 60</span>
-      <span class="pill" id="musicBtn" style="cursor:pointer" onclick="music.toggle()">🔊</span>
+      <span class="pill icon-pill" id="musicBtn" style="cursor:pointer" onclick="music.toggle()" role="button" aria-label="音樂">🔊</span>
+      <span class="pill icon-pill" id="sfxBtn" data-sfx-btn style="cursor:pointer" onclick="sfx.toggle()" role="button" aria-label="音效">🔔</span>
     </div>
     <div class="shop" id="shop">
       <div class="shop-sky">
@@ -624,54 +641,117 @@ function setDiff(id){
   refreshHi();
 }
 
-function gullAlarm(){const now=Date.now();if(window._gullT&&now-window._gullT<6000)return;window._gullT=now;const s=document.querySelector('.shop-sky');if(!s)return;const c=document.createElement('div');c.className='gull';const t=['🚨 快出菜！','🚨 客人要走了！','🚨 緊急！'][Math.floor(Math.random()*3)];c.innerHTML='<span class="caw">嘎嘎！</span><svg width="40" height="22" viewBox="0 0 40 22"><g class="wu"><path d="M17 12 L5 1 L12 3 L20 10 Z M23 12 L35 1 L28 3 L20 10 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><g class="wd"><path d="M17 12 L4 20 L11 19 L20 14 Z M23 12 L36 20 L29 19 L20 14 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><ellipse cx="20" cy="12" rx="8" ry="4.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="28" cy="10" r="3.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="29" cy="9.5" r="0.9" fill="#111"/><path d="M31 10.5 L36 12 L31 12.5 Z" fill="#f39c12" stroke="#1a1a1a" stroke-width=".8"/></svg><div class="sign">'+t+'</div>';s.appendChild(c);setTimeout(()=>c.remove(),4800);[0,260,620,880].forEach((d,i)=>setTimeout(()=>{beep(i%2?1050:1400,.16,'sawtooth',.06);setTimeout(()=>beep(i%2?750:950,.12,'sawtooth',.05),90)},d))}
+function gullAlarm(){const now=Date.now();if(window._gullT&&now-window._gullT<6000)return;window._gullT=now;const s=document.querySelector('.shop-sky');if(!s)return;const c=document.createElement('div');c.className='gull';const t=['🚨 快出菜！','🚨 客人要走了！','🚨 緊急！'][Math.floor(Math.random()*3)];c.innerHTML='<span class="caw">嘎嘎！</span><svg width="40" height="22" viewBox="0 0 40 22"><g class="wu"><path d="M17 12 L5 1 L12 3 L20 10 Z M23 12 L35 1 L28 3 L20 10 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><g class="wd"><path d="M17 12 L4 20 L11 19 L20 14 Z M23 12 L36 20 L29 19 L20 14 Z" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/></g><ellipse cx="20" cy="12" rx="8" ry="4.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="28" cy="10" r="3.5" fill="#fff" stroke="#1a1a1a" stroke-width="1.5"/><circle cx="29" cy="9.5" r="0.9" fill="#111"/><path d="M31 10.5 L36 12 L31 12.5 Z" fill="#f39c12" stroke="#1a1a1a" stroke-width=".8"/></svg><div class="sign">'+t+'</div>';s.appendChild(c);setTimeout(()=>c.remove(),4800);sfx.gull()}
+function unlockAudio(){
+  try{
+    const c=ac();
+    if(c.state==='suspended') c.resume();
+    const b=c.createBuffer(1,1,c.sampleRate||22050);
+    const s=c.createBufferSource();
+    s.buffer=b; s.connect(c.destination); s.start(0);
+  }catch(e){}
+}
+['pointerdown','touchstart','click'].forEach(ev=>{
+  document.addEventListener(ev, unlockAudio, {capture:true, passive:true});
+});
 function beep(f,d,type,v){
   try{
-    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    const c=ac();
+    const o=c.createOscillator(), g=c.createGain();
     o.type=type||'square'; o.frequency.value=f;
     g.gain.value=v||0.07;
-    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+(d||0.08));
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime+(d||0.08));
+    g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+(d||0.08));
+    o.connect(g); g.connect(c.destination);
+    o.start(); o.stop(c.currentTime+(d||0.08));
   }catch(e){}
 }
 function ac(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();return audioCtx}
+function tone(freq,dur,type,vol,opt){
+  opt=opt||{};
+  try{
+    const c=ac();
+    const t0=c.currentTime+(opt.delay||0);
+    const o=c.createOscillator(), g=c.createGain();
+    o.type=type||'sine';
+    o.frequency.setValueAtTime(Math.max(1,freq), t0);
+    if(opt.slide) o.frequency.exponentialRampToValueAtTime(Math.max(1,opt.slide), t0+dur);
+    const atk=Math.min(opt.atk||0.008, dur/3);
+    const peak=Math.max(0.0001, vol||0.05);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(peak, t0+atk);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+Math.max(dur, atk+0.02));
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0+dur+0.03);
+  }catch(e){}
+}
+function bell(freq,dur,vol,delay){
+  tone(freq, dur, 'sine', vol, {delay:delay||0, atk:0.004});
+  tone(freq*2.0, dur*0.7, 'sine', (vol||0.05)*0.32, {delay:delay||0, atk:0.004});
+  tone(freq*2.76, dur*0.45, 'sine', (vol||0.05)*0.16, {delay:delay||0, atk:0.004});
+}
 function sizzle(dur,v){
   try{const c=ac();const n=Math.floor(c.sampleRate*dur);const b=c.createBuffer(1,n,c.sampleRate);const d=b.getChannelData(0);
     for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(Math.random()<.3?1:.35);
-    const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type='highpass';f.frequency.value=2500;
+    const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type='bandpass';f.frequency.value=3500;f.Q.value=0.8;
     const g=c.createGain();g.gain.setValueAtTime(v||.06,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);
     s.connect(f);f.connect(g);g.connect(c.destination);s.start();}catch(e){}
 }
 const sfx={
-  tap:()=>beep(500,.04,'square',.05),
-  cook:()=>{sizzle(1.2,.07);beep(220,.06,'square',.04)},
-  ready:()=>{beep(1318,.15,'triangle',.08);setTimeout(()=>beep(1760,.25,'triangle',.07),90)},
-  ok:()=>{beep(523,.05);setTimeout(()=>beep(659,.05),70);setTimeout(()=>beep(784,.12),140)},
-  bad:()=>beep(140,.15,'sawtooth',.06),
-  angry:()=>{beep(180,.1,'sawtooth',.06);setTimeout(()=>beep(150,.18,'sawtooth',.06),110)},
-  enter:()=>{beep(880,.05,'triangle',.05);setTimeout(()=>beep(660,.08,'triangle',.05),80)},
-  plate:()=>beep(1200,.05,'triangle',.05),
-  win:()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.1),i*90))},
-  lose:()=>{[392,330,262].forEach((f,i)=>setTimeout(()=>beep(f,.12),i*100))}
+  on:(()=>{try{return localStorage.getItem('bbb_sfx')!=='0'}catch(e){return true}})(),
+  _go(){if(!this.on)return false;unlockAudio();return true},
+  tap(){if(!this._go())return;tone(880,.05,'triangle',.04);tone(1175,.06,'sine',.028,{delay:.03})},
+  cook(){if(!this._go())return;sizzle(.5,.04);tone(196,.07,'triangle',.025)},
+  ready(){if(!this._go())return;tone(1046,.08,'sine',.04);tone(1568,.16,'sine',.035,{delay:.07})},
+  ok(){if(!this._go())return;[659,784,1047].forEach((f,i)=>bell(f,.22,.038,i*.09))},
+  bad(){if(!this._go())return;tone(170,.16,'square',.03,{slide:125});tone(210,.12,'triangle',.028)},
+  angry(){if(!this._go())return;tone(196,.2,'sine',.045,{slide:131});tone(147,.3,'triangle',.035,{delay:.16,slide:110})},
+  enter(){if(!this._go())return;bell(988,.28,.045,0);bell(1319,.38,.04,.14)},
+  plate(){if(!this._go())return;tone(1175,.06,'sine',.035)},
+  coin(){if(!this._go())return;tone(987,.045,'sine',.032);tone(1319,.09,'sine',.028,{delay:.04})},
+  start(){if(!this._go())return;[523,659,784,1046].forEach((f,i)=>bell(f,.22,.038,i*.1))},
+  tick10(){if(!this._go())return;const late=G&&G.time<=5;tone(late?880:660,late?.07:.055,'triangle',late?.036:.028)},
+  win(){if(!this._go())return;[523,659,784,1046,1318,1046,1568].forEach((f,i)=>bell(f,.26,.036,i*.11))},
+  lose(){if(!this._go())return;[392,349,330,262].forEach((f,i)=>tone(f,.22,'sine',.038,{delay:i*.12}))},
+  gull(){if(!this._go())return;[0,260,620,880].forEach((d,i)=>setTimeout(()=>{if(!sfx.on)return;tone(i%2?880:1100,.12,'triangle',.036);tone(i%2?660:820,.1,'sine',.026,{delay:.08})},d))},
+  crow(){if(!this._go())return;setTimeout(()=>{if(!sfx.on)return;tone(392,.1,'triangle',.035);tone(330,.14,'sine',.03,{delay:.12})},500)},
+  toggle(){this.on=!this.on;try{localStorage.setItem('bbb_sfx',this.on?'1':'0')}catch(e){} this.refreshBtn()},
+  refreshBtn(){
+    const on=this.on;
+    document.querySelectorAll('[data-sfx-btn]').forEach(b=>{
+      const start=b.classList.contains('audio-tog');
+      b.textContent=start?(on?'🔔 音效':'🔕 音效'):(on?'🔔':'🔕');
+      b.classList.toggle('off',!on);
+      b.setAttribute('aria-label', on?'關閉音效':'開啟音效');
+      b.setAttribute('aria-pressed', on?'true':'false');
+    });
+  }
 };
 /* chiptune BGM */
 const music={on:(()=>{try{return localStorage.getItem('bbb_music')!=='0'}catch(e){return true}})(),timer:null,step:0,
   mel:[72,0,76,79,76,0,74,72,69,0,72,74,76,0,72,0, 74,0,77,81,79,77,76,74,72,0,76,74,72,0,0,0],
   bass:[48,55,52,55,45,52,48,52,50,57,53,57,43,50,47,50],
-  start(){if(!this.on||this.timer)return;try{ac().resume()}catch(e){}
+  start(){if(!this.on||this.timer)return;try{unlockAudio();ac().resume()}catch(e){}
+    const tempo=(typeof currentDiff==='function'&&currentDiff().id==='peak')?130:170;
     this.timer=setInterval(()=>{const i=this.step++;const m=this.mel[i%32];
       if(!G||!G.run){this.stop();return}
       if(m)beep(440*Math.pow(2,(m-69)/12),.16,'square',.025);
       if(i%2===0){const b=this.bass[(i/2|0)%16];beep(440*Math.pow(2,(b-69)/12),.2,'triangle',.05)}
       if(i%4===2)sizzle(.03,.02);
-    },170)},
+    },tempo)},
   stop(){clearInterval(this.timer);this.timer=null},
   toggle(){this.on=!this.on;try{localStorage.setItem('bbb_music',this.on?'1':'0')}catch(e){}
     if(this.on&&G&&G.run)this.start();else this.stop();
-    const b=document.getElementById('musicBtn');if(b)b.textContent=this.on?'🔊':'🔇'}
+    this.refreshBtn()},
+  refreshBtn(){
+    const on=this.on;
+    const hud=document.getElementById('musicBtn');
+    if(hud){hud.textContent=on?'🔊':'🔇';hud.setAttribute('aria-label',on?'關閉音樂':'開啟音樂');hud.setAttribute('aria-pressed',on?'true':'false')}
+    const start=document.getElementById('musicBtnStart');
+    if(start){start.textContent=on?'🎵 音樂':'🔇 音樂';start.classList.toggle('off',!on);start.setAttribute('aria-pressed',on?'true':'false')}
+  }
 };
+window.sfx=sfx; window.music=music;
+
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on')}
 function toast(t,ms){const e=$(/端|送|盤|惠顧|哇災|雅馬哈|上菜|開動|別桌|在吃|進門|再點客人/.test(t)?'serveSay':'prepSay');if(!e)return;e.textContent=t;e.style.marginLeft='0';e.classList.add('show');requestAnimationFrame(()=>{const r=e.getBoundingClientRect(),W=document.documentElement.clientWidth;let d=0;if(r.left<4)d=4-r.left;else if(r.right>W-4)d=W-4-r.right;if(d)e.style.marginLeft=d+'px'});clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),ms||900)}
@@ -1144,7 +1224,7 @@ function guestStormOut(custId, reason){
   G.plates=G.plates.filter(p=>p.guestId!==custId);
   G.stickers=G.stickers.filter(s=>s.guestId!==custId);
   G.score=Math.max(0,G.score-15);
-  G.lost=(G.lost||0)+1;sfx.angry();{const s=document.querySelector('.shop-sky');if(s){const c=document.createElement('div');c.className='crow';c.innerHTML='<svg width="34" height="22" viewBox="0 0 34 22"><g class="wu"><path d="M14 11 L4 1 L10 2 L17 9 Z M20 11 L28 1 L23 2 L17 9 Z" fill="#111"/></g><g class="wd"><path d="M14 11 L3 19 L9 18 L17 13 Z M20 11 L30 19 L25 18 L17 13 Z" fill="#111"/></g><ellipse cx="17" cy="12" rx="8" ry="3.5" fill="#111"/><circle cx="26" cy="10.5" r="3" fill="#111"/><path d="M28.5 10 L33 11 L28.5 12 Z" fill="#f5a623"/><circle cx="26.8" cy="9.8" r=".8" fill="#fff"/><path d="M9 12 L4 10 L4 15 Z" fill="#111"/></svg>';s.appendChild(c);setTimeout(()=>c.remove(),3400);setTimeout(()=>{beep(520,.08,'square',.04);setTimeout(()=>beep(440,.12,'square',.04),140)},500)}}
+  G.lost=(G.lost||0)+1;sfx.angry();{const s=document.querySelector('.shop-sky');if(s){const c=document.createElement('div');c.className='crow';c.innerHTML='<svg width="34" height="22" viewBox="0 0 34 22"><g class="wu"><path d="M14 11 L4 1 L10 2 L17 9 Z M20 11 L28 1 L23 2 L17 9 Z" fill="#111"/></g><g class="wd"><path d="M14 11 L3 19 L9 18 L17 13 Z M20 11 L30 19 L25 18 L17 13 Z" fill="#111"/></g><ellipse cx="17" cy="12" rx="8" ry="3.5" fill="#111"/><circle cx="26" cy="10.5" r="3" fill="#111"/><path d="M28.5 10 L33 11 L28.5 12 Z" fill="#f5a623"/><circle cx="26.8" cy="9.8" r=".8" fill="#fff"/><path d="M9 12 L4 10 L4 15 Z" fill="#111"/></svg>';s.appendChild(c);setTimeout(()=>c.remove(),3400);sfx.crow()}}
   toast(reason||'客人氣走了…');
   const snapshot={...cust};
   syncTray();
@@ -1160,6 +1240,8 @@ function tick(){
   if(!G||!G.run) return;
   G.time-=0.1;
   if(G.time<=0){G.time=0;renderHud();endGame(false);return}
+  const sec=Math.ceil(G.time);
+  if(sec<=10 && sec!==G._tickSec){ G._tickSec=sec; sfx.tick10(); }
   renderHud();
   let needCust=false;
   const now=performance.now();
@@ -1187,12 +1269,13 @@ function tick(){
   if(needCust && !stormers.length) renderCusts();
 }
 function startGame(){
-  try{if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()}catch(e){}
+  unlockAudio();
   clearSel();
   $('walkLayer').innerHTML='';
   G=buildRound();
   try{music.stop();music.step=0;music.start();}catch(e){}
-  {const b=$('musicBtn');if(b)b.textContent=music.on?'🔊':'🔇'}
+  try{sfx.start()}catch(e){}
+  try{music.refreshBtn();sfx.refreshBtn()}catch(e){}
   show('s-play');
   spawnGuest();
   renderAll();
@@ -1224,10 +1307,11 @@ function endGame(win){
     $('endScore').textContent='0 分';
     show('s-end'); refreshHi();
     const t0=performance.now(), dur=1100;
+    let lastCoin=0;
     (function tick(now){
       const k=Math.min(1,(now-t0)/dur);
       $('endScore').textContent=Math.round(score*k)+' 分';
-      if(k<1){ if(Math.random()<.35) beep(600+k*600,.03,'square',.03); requestAnimationFrame(tick); }
+      if(k<1){ if(now-lastCoin>130){ lastCoin=now; sfx.coin(); } requestAnimationFrame(tick); }
       else if(score>prevBest && score>0){ $('endNew').style.display='inline-block'; sfx.win(); }
     })(t0);
   },900);
@@ -1404,6 +1488,7 @@ window.__BBB={
   seatedGuests:()=>G?seatedGuests():[], freeSeatIndex:()=>G?freeSeatIndex():-1
 };
 refreshHi();
+try{music.refreshBtn();sfx.refreshBtn()}catch(e){}
 })();
 </script>
 <script>(function(){var ua=navigator.userAgent;if(/iPhone|iPod/.test(ua)&&!navigator.standalone&&!matchMedia("(display-mode: standalone)").matches)document.documentElement.classList.add("ios-tab");function fit(){var h=(window.visualViewport?visualViewport.height:innerHeight);var a=document.getElementById("app");if(a)a.style.height=h+"px"}fit();addEventListener("resize",fit);window.visualViewport&&visualViewport.addEventListener("resize",fit)})()</script></body>
